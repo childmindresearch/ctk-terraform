@@ -1,0 +1,14 @@
+default_env := "main"
+
+init env=default_env *args='':
+    terraform -chdir="./{{env}}" init {{args}}
+
+plan env=default_env *args='':
+    terraform -chdir="./{{env}}" plan {{args}}
+
+apply env=default_env *args='':
+    terraform -chdir="./{{env}}" apply {{args}}
+
+destroy env=default_env *args='':
+    terraform -chdir="./{{env}}" destroy {{args}}
+

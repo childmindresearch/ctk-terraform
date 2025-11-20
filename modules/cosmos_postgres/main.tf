@@ -1,0 +1,47 @@
+resource "azurerm_cosmosdb_postgresql_cluster" "cluster" {
+  name                            = format("cosmos-pg-%s-%s", var.project_name, var.environment_name)
+  resource_group_name             = var.resource_group_name
+  location                        = var.region_name
+  administrator_login_password    = var.administrator_password
+  coordinator_storage_quota_in_mb = var.coordinator_storage_quota_in_mb
+  coordinator_vcore_count         = var.coordinator_vcore_count
+  node_count                      = var.node_count
+  node_storage_quota_in_mb        = var.node_storage_quota_in_mb
+  node_vcores                     = var.node_vcores
+
+  tags = {
+    environment = var.environment_name
+    project     = var.project_name
+  }
+}
+
+resource "azurerm_private_endpoint" "cosmos_postgres" {
+  name                = format("pe-cosmos-pg-%s-%s", var.project_name, var.environment_name)
+  location            = var.region_name
+  resource_group_name = var.resource_group_name
+  subnet_id           = var.database_subnet_id
+
+  private_service_connection {
+    name                           = "cosmos-postgres-connection"
+    private_connection_resource_id = azurerm_cosmosdb_postgresql_cluster.cluster.id
+    is_manual_connection           = false
+    subresource_names              = ["coordinator"]
+  }
+
+  private_dns_zone_group {
+    name                 = "cosmos-postgres-dns-zone-group"
+    private_dns_zone_ids = [azurerm_private_dns_zone.cosmos_postgres.id]
+  }
+}
+
+resource "azurerm_private_dns_zone" "cosmos_postgres" {
+  name                = "privatelink.postgres.cosmos.azure.com"
+  resource_group_name = var.resource_group_name
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "cosmos_postgres" {
+  name                  = format("pdns-link-%s-%s", var.project_name, var.environment_name)
+  resource_group_name   = var.resource_group_name
+  private_dns_zone_name = azurerm_private_dns_zone.cosmos_postgres.name
+  virtual_network_id    = var.vnet_id
+}
