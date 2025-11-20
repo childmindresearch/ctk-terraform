@@ -3,7 +3,7 @@ terraform {
     resource_group_name  = "rg-tfstate"
     storage_account_name = "stctktfstateprod"
     container_name       = "tfstate"
-    key                  = "prod.terraform.tfstate"
+    key                  = "dev.terraform.tfstate"
   }
 
   required_providers {
@@ -22,19 +22,17 @@ provider "azurerm" {
   features {}
 }
 
-module "prod_environment" {
+module "dev_environment" {
   source = "../modules/environment"
 
   project_name             = var.project_name
-  environment_name         = "prod"
+  environment_name         = "dev"
   region_name              = var.region_name
   database_name            = "ctk"
-  acr_sku                  = "Basic"
+  acr_sku                  = "Basic" 
   webapp_image_tag         = var.webapp_image_tag
   cloai_service_image_tag  = var.cloai_service_image_tag
   ctk_functions_image_tag  = var.ctk_functions_image_tag
   cloai_model              = var.cloai_model
-  azure_ad_client_id       = var.azure_ad_client_id
-  azure_ad_tenant_id       = var.azure_ad_tenant_id
 }
 

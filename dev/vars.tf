@@ -32,14 +32,3 @@ variable "cloai_model" {
   description = "CLOAI model to use."
   default = "sonnet-4.0-v1"
 }
-
-variable "azure_ad_client_id" {
-  type        = string
-  description = "Azure AD application (client) ID for SSO."
-}
-
-variable "azure_ad_tenant_id" {
-  type        = string
-  description = "Azure AD tenant ID."
-}
-

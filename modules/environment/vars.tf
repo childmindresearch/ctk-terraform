@@ -1,12 +1,27 @@
 variable "project_name" {
   type        = string
   description = "Name of the project."
-  default = "ctk"
+}
+
+variable "environment_name" {
+  type        = string
+  description = "Name of the environment (prod, dev, etc)."
 }
 
 variable "region_name" {
   type        = string
-  description = "Name of the region to put the resource group in."
+  description = "Azure region name."
+}
+
+variable "database_name" {
+  type        = string
+  description = "PostgreSQL database name."
+}
+
+variable "acr_sku" {
+  type        = string
+  description = "SKU for Azure Container Registry."
+  default     = "Basic"
 }
 
 variable "webapp_image_tag" {
@@ -30,7 +45,6 @@ variable "ctk_functions_image_tag" {
 variable "cloai_model" {
   type        = string
   description = "CLOAI model to use."
-  default = "sonnet-4.0-v1"
 }
 
 variable "azure_ad_client_id" {
@@ -43,3 +57,8 @@ variable "azure_ad_tenant_id" {
   description = "Azure AD tenant ID."
 }
 
+variable "azure_ad_client_secret" {
+  type        = string
+  description = "Azure AD application client secret."
+  sensitive   = true
+}

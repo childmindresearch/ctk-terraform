@@ -65,3 +65,14 @@ variable "azure_blob_account_name" {
   type        = string
   description = "Azure Blob Storage account name."
 }
+
+variable "azure_ad_client_id" {
+  type        = string
+  description = "Azure AD application (client) ID for SSO."
+}
+
+variable "azure_ad_tenant_id" {
+  type        = string
+  description = "Azure AD tenant ID."
+}
+

@@ -62,3 +62,41 @@ resource "azurerm_container_app" "webapp" {
     }
   }
 }
+
+// AzureRM does not yet support configuring Authentication for Container Apps,
+// so we use the azapi provider to do this.
+// C.f. https://github.com/hashicorp/terraform-provider-azurerm/issues/22213
+resource "azapi_resource_action" "my_app_auth" {
+  type        = "Microsoft.App/containerApps/authConfigs@2024-03-01"
+  resource_id = "${azurerm_container_app.webapp.id}/authConfigs/current"
+  method      = "PUT"
+
+  body = jsonencode({
+    location = azurerm_resource_group.ev_rg.location
+    properties = {
+      globalValidation = {
+        redirectToProvider          = "azureactivedirectory"
+        unauthenticatedClientAction = "RedirectToLoginPage"
+      }
+      identityProviders = {
+        azureActiveDirectory = {
+          registration = {
+            clientId                = var.azure_ad_client_id
+            clientSecretSettingName = "microsoft-provider-authentication-secret"
+            openIdIssuer            = "https://sts.windows.net/${var.azure_ad_tenant_id}/v2.0"
+          }
+          validation = {
+            defaultAuthorizationPolicy = {
+              allowedApplications = [
+                var.azure_ad_client_id,
+              ]
+            }
+          }
+        }
+      }
+      platform = {
+        enabled = true
+      }
+    }
+  })
+}
