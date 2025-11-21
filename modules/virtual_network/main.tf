@@ -15,15 +15,6 @@ resource "azurerm_subnet" "container_apps" {
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = var.container_apps_subnet_address_prefixes
-
-  delegation {
-    name = "container-apps-delegation"
-
-    service_delegation {
-      name    = "Microsoft.App/environments"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
-    }
-  }
 }
 
 resource "azurerm_subnet" "database" {
@@ -50,5 +41,5 @@ resource "azurerm_subnet" "storage" {
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = var.storage_subnet_address_prefixes
 
-  service_endpoints = ["Microsoft.Storage"]
+  service_endpoints = ["Microsoft.Storage", "Microsoft.KeyVault"]
 }

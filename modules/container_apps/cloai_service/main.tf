@@ -39,12 +39,18 @@ resource "azurerm_container_app" "cloai_service" {
   secret {
     name                = "config-json"
     key_vault_secret_id = var.config_json_secret_id
-    identity            = "system"
+    identity            = "System"
   }
 }
 
 resource "azurerm_role_assignment" "cloai_kv_secrets_user" {
   scope                = var.key_vault_id
   role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_container_app.cloai_service.identity[0].principal_id
+}
+
+resource "azurerm_role_assignment" "cloai_acr_pull" {
+  scope                = var.acr_id
+  role_definition_name = "AcrPull"
   principal_id         = azurerm_container_app.cloai_service.identity[0].principal_id
 }

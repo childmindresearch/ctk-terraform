@@ -85,3 +85,8 @@ variable "key_vault_id" {
   type        = string
   description = "The ID of the Key Vault to grant access to."
 }
+
+variable "acr_id" {
+  type        = string
+  description = "The ID of the Azure Container Registry."
+}

@@ -43,3 +43,8 @@ variable "azure_ad_tenant_id" {
   description = "Azure AD tenant ID."
 }
 
+variable "subscription_id" {
+  type        = string
+  description = "Azure Subscription ID."
+}
+

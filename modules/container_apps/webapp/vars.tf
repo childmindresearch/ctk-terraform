@@ -13,6 +13,11 @@ variable "resource_group_name" {
   description = "Name of the resource group to put the container app in."
 }
 
+variable "location" {
+  type        = string
+  description = "Azure region to deploy the container app. Required for modifying the resource with a PUT request."
+}
+
 variable "container_app_environment_id" {
   type        = string
   description = "ID of the Container App Environment."
@@ -76,3 +81,7 @@ variable "azure_ad_tenant_id" {
   description = "Azure AD tenant ID."
 }
 
+variable "acr_id" {
+  type        = string
+  description = "The ID of the Azure Container Registry."
+}

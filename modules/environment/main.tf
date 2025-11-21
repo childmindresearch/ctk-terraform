@@ -5,15 +5,6 @@ module "resource_group" {
   environment_name = var.environment_name
 }
 
-module "container_registry" {
-  source              = "../container_registry"
-  resource_group_name = module.resource_group.name
-  project_name        = var.project_name
-  environment_name    = var.environment_name
-  region_name         = var.region_name
-  acr_sku             = var.acr_sku
-}
-
 module "log_analytics" {
   source              = "../log_analytics"
   resource_group_name = module.resource_group.name
@@ -56,6 +47,10 @@ resource "azurerm_key_vault_secret" "postgres_admin_password" {
   name         = "postgres-admin-password"
   value        = random_password.postgres_admin_password.result
   key_vault_id = module.key_vault.id
+
+  depends_on = [
+    module.key_vault
+  ]
 }
 
 module "cosmos_postgres" {
@@ -94,7 +89,8 @@ module "webapp" {
   project_name                 = var.project_name
   environment_name             = var.environment_name
   container_app_environment_id = module.container_app_environment.container_app_environment_id
-  acr_login_server             = module.container_registry.container_registry_login_server
+  acr_login_server             = var.acr_login_server
+  acr_id                       = var.acr_id
   languagetool_url             = "https://${module.languagetool.fqdn}"
   image_tag                    = var.webapp_image_tag
   postgres_host                = module.cosmos_postgres.host
@@ -105,7 +101,7 @@ module "webapp" {
   azure_blob_account_name      = module.storage_account.storage_account_name
   azure_ad_client_id           = var.azure_ad_client_id
   azure_ad_tenant_id           = var.azure_ad_tenant_id
-  azure_ad_client_secret       = var.azure_ad_client_secret
+  location = var.region_name
 }
 
 module "cloai_service" {
@@ -114,7 +110,8 @@ module "cloai_service" {
   project_name                 = var.project_name
   environment_name             = var.environment_name
   container_app_environment_id = module.container_app_environment.container_app_environment_id
-  acr_login_server             = module.container_registry.container_registry_login_server
+  acr_login_server             = var.acr_login_server
+  acr_id                       = var.acr_id
   image_tag                    = var.cloai_service_image_tag
   config_json_secret_id        = "${module.key_vault.vault_uri}secrets/cloai-service-config-json"
   key_vault_id                 = module.key_vault.id
@@ -126,7 +123,8 @@ module "ctk_functions" {
   project_name                           = var.project_name
   environment_name                       = var.environment_name
   container_app_environment_id           = module.container_app_environment.container_app_environment_id
-  acr_login_server                       = module.container_registry.container_registry_login_server
+  acr_login_server                       = var.acr_login_server
+  acr_id                                 = var.acr_id
   image_tag                              = var.ctk_functions_image_tag
   postgres_host                          = module.cosmos_postgres.host
   postgres_port                          = module.cosmos_postgres.port

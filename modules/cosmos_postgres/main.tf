@@ -5,9 +5,11 @@ resource "azurerm_cosmosdb_postgresql_cluster" "cluster" {
   administrator_login_password    = var.administrator_password
   coordinator_storage_quota_in_mb = var.coordinator_storage_quota_in_mb
   coordinator_vcore_count         = var.coordinator_vcore_count
+  coordinator_server_edition      = var.coordinator_server_edition
   node_count                      = var.node_count
   node_storage_quota_in_mb        = var.node_storage_quota_in_mb
   node_vcores                     = var.node_vcores
+  node_server_edition            = var.node_server_edition
 
   tags = {
     environment = var.environment_name

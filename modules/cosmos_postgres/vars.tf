@@ -43,13 +43,19 @@ variable "database_name" {
 variable "coordinator_storage_quota_in_mb" {
   type        = number
   description = "Storage quota in MB for the coordinator node."
-  default     = 131072
+  default     = 32768
 }
 
 variable "coordinator_vcore_count" {
   type        = number
   description = "Number of vCores for the coordinator node."
-  default     = 1
+  default     = 2
+}
+
+variable "coordinator_server_edition" {
+  type        = string
+  description = "The server edition for the coordinator node."
+  default     = "BurstableGeneralPurpose"
 }
 
 variable "node_count" {
@@ -61,11 +67,17 @@ variable "node_count" {
 variable "node_storage_quota_in_mb" {
   type        = number
   description = "Storage quota in MB for each worker node."
-  default     = 131072
+  default     = 32768
 }
 
 variable "node_vcores" {
   type        = number
   description = "Number of vCores for each worker node."
-  default     = 1
+  default     = 2
+}
+
+variable "node_server_edition" {
+  type        = string
+  description = "The server edition for the worker nodes."
+  default     = "GeneralPurpose"
 }

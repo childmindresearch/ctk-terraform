@@ -13,6 +13,10 @@ resource "azurerm_container_app" "webapp" {
     }
   }
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   template {
     container {
       name   = format("ca-ctk-webapp-%s-%s", var.project_name, var.environment_name)
@@ -63,6 +67,12 @@ resource "azurerm_container_app" "webapp" {
   }
 }
 
+resource "azurerm_role_assignment" "webapp_acr_pull" {
+  scope                = var.acr_id
+  role_definition_name = "AcrPull"
+  principal_id         = azurerm_container_app.webapp.identity[0].principal_id
+}
+
 // AzureRM does not yet support configuring Authentication for Container Apps,
 // so we use the azapi provider to do this.
 // C.f. https://github.com/hashicorp/terraform-provider-azurerm/issues/22213
@@ -71,8 +81,8 @@ resource "azapi_resource_action" "my_app_auth" {
   resource_id = "${azurerm_container_app.webapp.id}/authConfigs/current"
   method      = "PUT"
 
-  body = jsonencode({
-    location = azurerm_resource_group.ev_rg.location
+  body = {
+    location = var.location
     properties = {
       globalValidation = {
         redirectToProvider          = "azureactivedirectory"
@@ -98,5 +108,5 @@ resource "azapi_resource_action" "my_app_auth" {
         enabled = true
       }
     }
-  })
+  }
 }

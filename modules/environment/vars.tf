@@ -18,10 +18,14 @@ variable "database_name" {
   description = "PostgreSQL database name."
 }
 
-variable "acr_sku" {
+variable "acr_id" {
   type        = string
-  description = "SKU for Azure Container Registry."
-  default     = "Basic"
+  description = "The ID of the shared Azure Container Registry."
+}
+
+variable "acr_login_server" {
+  type        = string
+  description = "The login server URL of the shared Azure Container Registry."
 }
 
 variable "webapp_image_tag" {
@@ -55,10 +59,4 @@ variable "azure_ad_client_id" {
 variable "azure_ad_tenant_id" {
   type        = string
   description = "Azure AD tenant ID."
-}
-
-variable "azure_ad_client_secret" {
-  type        = string
-  description = "Azure AD application client secret."
-  sensitive   = true
 }

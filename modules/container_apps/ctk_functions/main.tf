@@ -79,18 +79,24 @@ resource "azurerm_container_app" "ctk_functions" {
   secret {
     name                = "redcap-api-token"
     key_vault_secret_id = var.redcap_api_token_secret_id
-    identity            = "system"
+    identity            = "System"
   }
 
   secret {
     name                = "azure-blob-connection-string"
     key_vault_secret_id = var.azure_blob_connection_string_secret_id
-    identity            = "system"
+    identity            = "System"
   }
 }
 
 resource "azurerm_role_assignment" "ctk_functions_kv_secrets_user" {
   scope                = var.key_vault_id
   role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_container_app.ctk_functions.identity[0].principal_id
+}
+
+resource "azurerm_role_assignment" "ctk_functions_acr_pull" {
+  scope                = var.acr_id
+  role_definition_name = "AcrPull"
   principal_id         = azurerm_container_app.ctk_functions.identity[0].principal_id
 }

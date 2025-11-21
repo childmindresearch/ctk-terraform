@@ -5,21 +5,21 @@ terraform {
     container_name       = "tfstate"
     key                  = "prod.terraform.tfstate"
   }
-
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 4.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "~> 3.0"
-    }
-  }
 }
 
 provider "azurerm" {
   features {}
+  subscription_id = var.subscription_id
+}
+
+data "terraform_remote_state" "shared" {
+  backend = "azurerm"
+  config = {
+    resource_group_name  = "rg-tfstate"
+    storage_account_name = "stctktfstateprod"
+    container_name       = "tfstate"
+    key                  = "shared.terraform.tfstate"
+  }
 }
 
 module "prod_environment" {
@@ -29,7 +29,8 @@ module "prod_environment" {
   environment_name         = "prod"
   region_name              = var.region_name
   database_name            = "ctk"
-  acr_sku                  = "Basic"
+  acr_id                   = data.terraform_remote_state.shared.outputs.acr_id
+  acr_login_server         = data.terraform_remote_state.shared.outputs.acr_login_server
   webapp_image_tag         = var.webapp_image_tag
   cloai_service_image_tag  = var.cloai_service_image_tag
   ctk_functions_image_tag  = var.ctk_functions_image_tag

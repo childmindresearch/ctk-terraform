@@ -1,4 +1,4 @@
-default_env := "main"
+default_env := "dev"
 
 init env=default_env *args='':
     terraform -chdir="./{{env}}" init {{args}}
