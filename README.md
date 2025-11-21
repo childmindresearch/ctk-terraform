@@ -10,6 +10,8 @@ The infrastructure is organized into three main components:
 - **`dev/`**: Development environment
 - **`prod/`**: Production environment
 
+![Architecture Diagram](./visualize/ctk_terraform_architecture.png)
+
 ## Deployment Order
 
 **IMPORTANT**: You must deploy the shared infrastructure first, then the environment-specific infrastructure.
