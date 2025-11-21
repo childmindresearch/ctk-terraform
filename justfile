@@ -12,3 +12,7 @@ apply env=default_env *args='':
 destroy env=default_env *args='':
     terraform -chdir="./{{env}}" destroy {{args}}
 
+graph env=default_env *args='':
+    terraform -chdir="./{{env}}" graph {{args}} | dot -Tpng -o terraform-graph-{{env}}.png
+
+
