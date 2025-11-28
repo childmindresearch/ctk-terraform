@@ -101,7 +101,7 @@ module "webapp" {
   azure_blob_account_name      = module.storage_account.storage_account_name
   azure_ad_client_id           = var.azure_ad_client_id
   azure_ad_tenant_id           = var.azure_ad_tenant_id
-  location = var.region_name
+  location                     = var.region_name
 }
 
 module "cloai_service" {

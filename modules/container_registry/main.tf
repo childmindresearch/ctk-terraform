@@ -3,5 +3,9 @@ resource "azurerm_container_registry" "acr" {
   resource_group_name = var.resource_group_name
   location            = var.region_name
   sku                 = var.acr_sku
-  admin_enabled       = false
+  admin_enabled       = true
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
