@@ -1,5 +1,5 @@
 resource "azurerm_container_app" "languagetool" {
-  name                         = format("ca-ctk-languagetool-%s-%s", var.project_name, var.environment_name)
+  name                         = format("ca-%s-%s-languagetool", var.project_name, var.environment_name)
   container_app_environment_id = var.container_app_environment_id
   resource_group_name          = var.resource_group_name
   revision_mode                = "Single"
@@ -15,7 +15,7 @@ resource "azurerm_container_app" "languagetool" {
 
   template {
     container {
-      name   = format("ca-ctk-languagetool-%s-%s", var.project_name, var.environment_name)
+      name   = format("ca-%s-languagetool-%s", var.project_name, var.environment_name)
       image  = "erikvl87/languagetool:6.5"
       cpu    = 1
       memory = "2Gi"

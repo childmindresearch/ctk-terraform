@@ -26,10 +26,6 @@ resource "azurerm_key_vault" "kv" {
     environment = var.environment_name
     project     = var.project_name
   }
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 resource "azurerm_role_assignment" "terraform_kv_secrets_officer" {

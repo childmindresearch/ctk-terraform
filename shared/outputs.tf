@@ -8,6 +8,17 @@ output "acr_login_server" {
   value       = module.shared_container_registry.container_registry_login_server
 }
 
+output "acr_admin_username" {
+  description = "The admin username for the shared Azure Container Registry."
+  value       = module.shared_container_registry.admin_username
+}
+
+output "acr_admin_password" {
+  description = "The admin password for the shared Azure Container Registry."
+  value       = module.shared_container_registry.admin_password
+  sensitive   = true
+}
+
 output "resource_group_name" {
   description = "The name of the shared resource group."
   value       = module.shared_resource_group.name

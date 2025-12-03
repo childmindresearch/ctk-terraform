@@ -30,6 +30,8 @@ module "dev_environment" {
   database_name            = "ctk"
   acr_id                   = data.terraform_remote_state.shared.outputs.acr_id
   acr_login_server         = data.terraform_remote_state.shared.outputs.acr_login_server
+  acr_admin_username = data.terraform_remote_state.shared.outputs.acr_admin_username
+  acr_admin_password = data.terraform_remote_state.shared.outputs.acr_admin_password
   webapp_image_tag         = var.webapp_image_tag
   cloai_service_image_tag  = var.cloai_service_image_tag
   ctk_functions_image_tag  = var.ctk_functions_image_tag

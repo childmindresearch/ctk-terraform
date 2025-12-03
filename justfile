@@ -9,6 +9,10 @@ plan env=default_env *args='':
 apply env=default_env *args='':
     terraform -chdir="./{{env}}" apply {{args}}
 
+plapply env=default_env:
+    just plan {{env}} --out ./{{env}}.plan
+    just apply {{env}} ./{{env}}.plan
+
 destroy env=default_env *args='':
     terraform -chdir="./{{env}}" destroy {{args}}
 

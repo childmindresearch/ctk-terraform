@@ -83,6 +83,15 @@ module "languagetool" {
   container_app_environment_id = module.container_app_environment.container_app_environment_id
 }
 
+module "active_directory_app_registration" {
+  source       = "../active_directory_app_registration"
+  display_name = "ad-${var.project_name}-webapp-${var.environment_name}"
+  redirect_uris = [
+    "https://ca-${var.project_name}-${var.environment_name}-webapp.${module.container_app_environment.default_domain}/.auth/login/aad/callback",
+    "https://cliniciantoolkit.childmind.org/.auth/login/aad/callback"
+  ]
+}
+
 module "webapp" {
   source                       = "../container_apps/webapp"
   resource_group_name          = module.resource_group.name
@@ -90,6 +99,8 @@ module "webapp" {
   environment_name             = var.environment_name
   container_app_environment_id = module.container_app_environment.container_app_environment_id
   acr_login_server             = var.acr_login_server
+  acr_admin_username           = var.acr_admin_username
+  acr_admin_password           = var.acr_admin_password
   acr_id                       = var.acr_id
   languagetool_url             = "https://${module.languagetool.fqdn}"
   image_tag                    = var.webapp_image_tag
@@ -99,8 +110,9 @@ module "webapp" {
   postgres_user                = module.cosmos_postgres.administrator_login
   postgres_password            = module.cosmos_postgres.administrator_password
   azure_blob_account_name      = module.storage_account.storage_account_name
-  azure_ad_client_id           = var.azure_ad_client_id
-  azure_ad_tenant_id           = var.azure_ad_tenant_id
+  azure_ad_client_id           = module.active_directory_app_registration.client_id
+  azure_ad_client_secret       = module.active_directory_app_registration.client_secret
+  azure_ad_tenant_id           = module.active_directory_app_registration.tenant_id
   location                     = var.region_name
 }
 
@@ -111,6 +123,8 @@ module "cloai_service" {
   environment_name             = var.environment_name
   container_app_environment_id = module.container_app_environment.container_app_environment_id
   acr_login_server             = var.acr_login_server
+  acr_admin_username           = var.acr_admin_username
+  acr_admin_password           = var.acr_admin_password
   acr_id                       = var.acr_id
   image_tag                    = var.cloai_service_image_tag
   config_json_secret_id        = "${module.key_vault.vault_uri}secrets/cloai-service-config-json"
@@ -125,6 +139,8 @@ module "ctk_functions" {
   container_app_environment_id           = module.container_app_environment.container_app_environment_id
   acr_login_server                       = var.acr_login_server
   acr_id                                 = var.acr_id
+  acr_admin_username                     = var.acr_admin_username
+  acr_admin_password                     = var.acr_admin_password
   image_tag                              = var.ctk_functions_image_tag
   postgres_host                          = module.cosmos_postgres.host
   postgres_port                          = module.cosmos_postgres.port

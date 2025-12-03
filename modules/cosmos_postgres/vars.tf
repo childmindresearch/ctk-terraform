@@ -67,7 +67,7 @@ variable "node_count" {
 variable "node_storage_quota_in_mb" {
   type        = number
   description = "Storage quota in MB for each worker node."
-  default     = 32768
+  default     = 524288
 }
 
 variable "node_vcores" {

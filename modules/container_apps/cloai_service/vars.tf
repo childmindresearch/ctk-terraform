@@ -43,3 +43,14 @@ variable "acr_id" {
   type        = string
   description = "The ID of the Azure Container Registry."
 }
+
+variable "acr_admin_username" {
+  type        = string
+  description = "Admin username for the Azure Container Registry."
+}
+
+variable "acr_admin_password" {
+  type        = string
+  description = "Admin password for the Azure Container Registry."
+  sensitive   = true
+}

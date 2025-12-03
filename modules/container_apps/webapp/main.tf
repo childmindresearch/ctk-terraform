@@ -1,12 +1,12 @@
 resource "azurerm_container_app" "webapp" {
-  name                         = format("ca-ctk-webapp-%s-%s", var.project_name, var.environment_name)
+  name                         = format("ca-%s-%s-webapp", var.project_name, var.environment_name)
   container_app_environment_id = var.container_app_environment_id
   resource_group_name          = var.resource_group_name
   revision_mode                = "Single"
 
   ingress {
     external_enabled = true
-    target_port      = 8000
+    target_port      = 3000
     traffic_weight {
       percentage      = 100
       latest_revision = true
@@ -17,10 +17,26 @@ resource "azurerm_container_app" "webapp" {
     type = "SystemAssigned"
   }
 
+  registry {
+    server               = var.acr_login_server
+    username             = var.acr_admin_username
+    password_secret_name = "acr-admin-password"
+  }
+
+  secret {
+    name  = "acr-admin-password"
+    value = var.acr_admin_password
+  }
+
+  secret {
+    name  = "microsoft-provider-authentication-secret"
+    value = var.azure_ad_client_secret
+  }
+
   template {
     container {
-      name   = format("ca-ctk-webapp-%s-%s", var.project_name, var.environment_name)
-      image  = "${var.acr_login_server}/ctk-webapp:${var.image_tag}"
+      name   = format("ca-%s-%s-webapp", var.project_name, var.environment_name)
+      image  = "${var.acr_login_server}/childmindresearch/ctk-webapp:${var.image_tag}"
       cpu    = 1
       memory = "2Gi"
 
@@ -60,7 +76,7 @@ resource "azurerm_container_app" "webapp" {
       }
 
       env {
-        name = "BODY_SIZE_LIMIT"
+        name  = "BODY_SIZE_LIMIT"
         value = "5M"
       }
     }
@@ -110,3 +126,4 @@ resource "azapi_resource_action" "my_app_auth" {
     }
   }
 }
+

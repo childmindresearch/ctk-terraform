@@ -51,12 +51,13 @@ variable "cloai_model" {
   description = "CLOAI model to use."
 }
 
-variable "azure_ad_client_id" {
+variable "acr_admin_username" {
   type        = string
-  description = "Azure AD application (client) ID for SSO."
+  description = "Admin username for the Azure Container Registry."
 }
 
-variable "azure_ad_tenant_id" {
+variable "acr_admin_password" {
   type        = string
-  description = "Azure AD tenant ID."
+  description = "Admin password for the Azure Container Registry."
+  sensitive   = true
 }

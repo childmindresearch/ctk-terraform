@@ -1,5 +1,5 @@
 resource "azurerm_container_app" "cloai_service" {
-  name                         = format("ca-cloai-service-%s-%s", var.project_name, var.environment_name)
+  name                         = format("ca-%s-%s-cloai-service", var.project_name, var.environment_name)
   container_app_environment_id = var.container_app_environment_id
   resource_group_name          = var.resource_group_name
   revision_mode                = "Single"
@@ -17,10 +17,21 @@ resource "azurerm_container_app" "cloai_service" {
     type = "SystemAssigned"
   }
 
+  registry {
+    server               = var.acr_login_server
+    username             = var.acr_admin_username
+    password_secret_name = "acr-admin-password"
+  }
+
+  secret {
+    name  = "acr-admin-password"
+    value = var.acr_admin_password
+  }
+
   template {
     container {
-      name   = format("ca-cloai-service-%s-%s", var.project_name, var.environment_name)
-      image  = "${var.acr_login_server}/cloai-service:${var.image_tag}"
+      name   = format("ca-%s-%s-cloai-service", var.project_name, var.environment_name)
+      image  = "${var.acr_login_server}/childmindresearch/cloai-service:${var.image_tag}"
       cpu    = 1
       memory = "2Gi"
 
@@ -30,7 +41,7 @@ resource "azurerm_container_app" "cloai_service" {
       }
 
       env {
-        name      = "CONFIG_JSON"
+        name        = "CONFIG_JSON"
         secret_name = "config-json"
       }
     }

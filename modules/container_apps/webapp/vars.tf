@@ -76,6 +76,12 @@ variable "azure_ad_client_id" {
   description = "Azure AD application (client) ID for SSO."
 }
 
+variable "azure_ad_client_secret" {
+  type        = string
+  description = "Azure AD application (client) secret for SSO."
+  sensitive   = true
+}
+
 variable "azure_ad_tenant_id" {
   type        = string
   description = "Azure AD tenant ID."
@@ -84,4 +90,15 @@ variable "azure_ad_tenant_id" {
 variable "acr_id" {
   type        = string
   description = "The ID of the Azure Container Registry."
+}
+
+variable "acr_admin_username" {
+  type        = string
+  description = "Admin username for the Azure Container Registry."
+}
+
+variable "acr_admin_password" {
+  type        = string
+  description = "Admin password for the Azure Container Registry."
+  sensitive   = true
 }
