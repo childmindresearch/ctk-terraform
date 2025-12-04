@@ -79,6 +79,11 @@ resource "azurerm_container_app" "webapp" {
         name  = "BODY_SIZE_LIMIT"
         value = "5M"
       }
+
+      env {
+        name  = "APPLICATIONINSIGHTS_CONNECTION_STRING"
+        value = var.application_insights_connection_string
+      }
     }
   }
 }

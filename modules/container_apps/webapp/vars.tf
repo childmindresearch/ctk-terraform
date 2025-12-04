@@ -102,3 +102,9 @@ variable "acr_admin_password" {
   description = "Admin password for the Azure Container Registry."
   sensitive   = true
 }
+
+variable "application_insights_connection_string" {
+  type        = string
+  description = "Connection string for Application Insights."
+  sensitive   = true
+}

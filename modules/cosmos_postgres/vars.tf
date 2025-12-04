@@ -18,11 +18,6 @@ variable "resource_group_name" {
   description = "Name of the resource group."
 }
 
-variable "database_subnet_id" {
-  type        = string
-  description = "ID of the database subnet."
-}
-
 variable "vnet_id" {
   type        = string
   description = "ID of the virtual network."
@@ -32,12 +27,6 @@ variable "administrator_password" {
   type        = string
   description = "Administrator password for the Cosmos DB PostgreSQL cluster."
   sensitive   = true
-}
-
-variable "database_name" {
-  type        = string
-  description = "Name of the database to create."
-  default     = "ctk"
 }
 
 variable "coordinator_storage_quota_in_mb" {

@@ -23,11 +23,6 @@ output "port" {
   description = "The PostgreSQL port."
 }
 
-output "database_name" {
-  value       = var.database_name
-  description = "The database name."
-}
-
 output "administrator_password" {
   value       = var.administrator_password
   description = "The administrator password."

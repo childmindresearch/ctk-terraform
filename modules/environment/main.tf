@@ -13,6 +13,15 @@ module "log_analytics" {
   region_name         = var.region_name
 }
 
+module "application_insights" {
+  source                     = "../application_insights"
+  resource_group_name        = module.resource_group.name
+  project_name               = var.project_name
+  environment_name           = var.environment_name
+  location                   = var.region_name
+  log_analytics_workspace_id = module.log_analytics.id
+}
+
 module "virtual_network" {
   source              = "../virtual_network"
   resource_group_name = module.resource_group.name
@@ -59,10 +68,8 @@ module "cosmos_postgres" {
   project_name           = var.project_name
   environment_name       = var.environment_name
   region_name            = var.region_name
-  database_subnet_id     = module.virtual_network.database_subnet_id
   vnet_id                = module.virtual_network.vnet_id
   administrator_password = azurerm_key_vault_secret.postgres_admin_password.value
-  database_name          = var.database_name
 }
 
 module "container_app_environment" {
@@ -106,7 +113,7 @@ module "webapp" {
   image_tag                    = var.webapp_image_tag
   postgres_host                = module.cosmos_postgres.host
   postgres_port                = module.cosmos_postgres.port
-  postgres_db                  = module.cosmos_postgres.database_name
+  postgres_db                  = "citus"
   postgres_user                = module.cosmos_postgres.administrator_login
   postgres_password            = module.cosmos_postgres.administrator_password
   azure_blob_account_name      = module.storage_account.storage_account_name
@@ -114,6 +121,7 @@ module "webapp" {
   azure_ad_client_secret       = module.active_directory_app_registration.client_secret
   azure_ad_tenant_id           = module.active_directory_app_registration.tenant_id
   location                     = var.region_name
+  application_insights_connection_string = module.application_insights.connection_string
 }
 
 module "cloai_service" {
@@ -144,7 +152,7 @@ module "ctk_functions" {
   image_tag                              = var.ctk_functions_image_tag
   postgres_host                          = module.cosmos_postgres.host
   postgres_port                          = module.cosmos_postgres.port
-  postgres_db                            = module.cosmos_postgres.database_name
+  postgres_db                            = "citus"
   postgres_user                          = module.cosmos_postgres.administrator_login
   postgres_password                      = module.cosmos_postgres.administrator_password
   cloai_model                            = var.cloai_model
