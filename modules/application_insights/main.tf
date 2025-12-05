@@ -4,4 +4,5 @@ resource "azurerm_application_insights" "app_insights" {
   resource_group_name = var.resource_group_name
   workspace_id        = var.log_analytics_workspace_id
   application_type    = "web"
+  retention_in_days   = 180
 }
