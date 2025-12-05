@@ -20,6 +20,11 @@ resource "azurerm_cosmosdb_postgresql_cluster" "cluster" {
 resource "azurerm_private_dns_zone" "cosmos_postgres" {
   name                = "privatelink.postgres.cosmos.azure.com"
   resource_group_name = var.resource_group_name
+
+  tags = {
+    environment = var.environment_name
+    project     = var.project_name
+  }
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "cosmos_postgres" {
@@ -27,4 +32,9 @@ resource "azurerm_private_dns_zone_virtual_network_link" "cosmos_postgres" {
   resource_group_name   = var.resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.cosmos_postgres.name
   virtual_network_id    = var.vnet_id
+
+  tags = {
+    environment = var.environment_name
+    project     = var.project_name
+  }
 }

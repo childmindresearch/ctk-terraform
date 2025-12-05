@@ -4,6 +4,11 @@ resource "azurerm_container_app" "webapp" {
   resource_group_name          = var.resource_group_name
   revision_mode                = "Single"
 
+  tags = {
+    environment = var.environment_name
+    project     = var.project_name
+  }
+
   ingress {
     external_enabled = true
     target_port      = 3000

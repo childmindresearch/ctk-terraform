@@ -4,6 +4,11 @@ resource "azurerm_container_app" "ctk_functions" {
   resource_group_name          = var.resource_group_name
   revision_mode                = "Single"
 
+  tags = {
+    environment = var.environment_name
+    project     = var.project_name
+  }
+
   ingress {
     external_enabled = false
     target_port      = 8000

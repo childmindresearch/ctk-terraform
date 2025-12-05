@@ -5,4 +5,9 @@ resource "azurerm_application_insights" "app_insights" {
   workspace_id        = var.log_analytics_workspace_id
   application_type    = "web"
   retention_in_days   = 180
+
+  tags = {
+    environment = var.environment_name
+    project     = var.project_name
+  }
 }
