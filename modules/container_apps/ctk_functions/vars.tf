@@ -13,6 +13,11 @@ variable "resource_group_name" {
   description = "Name of the resource group to put the container app in."
 }
 
+variable "region_name" {
+  type        = string
+  description = "Region for the User-Assigned Identity."
+}
+
 variable "container_app_environment_id" {
   type        = string
   description = "ID of the Container App Environment."
@@ -90,10 +95,4 @@ variable "acr_id" {
 variable "acr_admin_username" {
   type        = string
   description = "Admin username for the Azure Container Registry."
-}
-
-variable "acr_admin_password" {
-  type        = string
-  description = "Admin password for the Azure Container Registry."
-  sensitive   = true
 }

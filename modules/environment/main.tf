@@ -111,7 +111,6 @@ module "cloai_service" {
   container_app_environment_id = module.container_app_environment.container_app_environment_id
   acr_login_server             = var.acr_login_server
   acr_admin_username           = var.acr_admin_username
-  acr_admin_password           = var.acr_admin_password
   acr_id                       = var.acr_id
   image_tag                    = var.cloai_service_image_tag
   config_json_secret_id        = "${module.key_vault.vault_uri}secrets/cloai-service-config-json"
@@ -122,12 +121,12 @@ module "ctk_functions" {
   source                       = "../container_apps/ctk_functions"
   resource_group_name          = module.resource_group.name
   project_name                 = var.project_name
+  region_name                  = var.region_name
   environment_name             = var.environment_name
   container_app_environment_id = module.container_app_environment.container_app_environment_id
   acr_login_server             = var.acr_login_server
   acr_id                       = var.acr_id
   acr_admin_username           = var.acr_admin_username
-  acr_admin_password           = var.acr_admin_password
   image_tag                    = var.ctk_functions_image_tag
   postgres_host                = module.cosmos_postgres.host
   postgres_port                = module.cosmos_postgres.port

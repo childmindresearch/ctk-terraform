@@ -1,3 +1,27 @@
+resource "azurerm_user_assigned_identity" "ctk_functions_identity" {
+  name                = format("id-%s-%s-ctk-functions", var.project_name, var.environment_name)
+  resource_group_name = var.resource_group_name
+  location            = var.region_name
+
+  tags = {
+    environment = var.environment_name
+    project     = var.project_name
+  }
+}
+
+resource "azurerm_role_assignment" "ctk_functions_kv_secrets_user" {
+  scope                = var.key_vault_id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_user_assigned_identity.ctk_functions_identity.principal_id
+}
+
+resource "azurerm_role_assignment" "ctk_functions_acr_pull" {
+  scope                = var.acr_id
+  role_definition_name = "AcrPull"
+  principal_id         = azurerm_user_assigned_identity.ctk_functions_identity.principal_id
+}
+
+
 resource "azurerm_container_app" "ctk_functions" {
   name                         = format("ca-%s-%s-ctk-functions", var.project_name, var.environment_name)
   container_app_environment_id = var.container_app_environment_id
@@ -18,19 +42,16 @@ resource "azurerm_container_app" "ctk_functions" {
     }
   }
 
+  depends_on = [azurerm_role_assignment.ctk_functions_acr_pull, azurerm_role_assignment.ctk_functions_kv_secrets_user]
+
   identity {
-    type = "SystemAssigned"
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.ctk_functions_identity.id]
   }
 
   registry {
-    server               = var.acr_login_server
-    username             = var.acr_admin_username
-    password_secret_name = "acr-admin-password"
-  }
-
-  secret {
-    name  = "acr-admin-password"
-    value = var.acr_admin_password
+    server   = var.acr_login_server
+    identity = azurerm_user_assigned_identity.ctk_functions_identity.id
   }
   template {
     container {
@@ -89,19 +110,6 @@ resource "azurerm_container_app" "ctk_functions" {
   secret {
     name                = "redcap-api-token"
     key_vault_secret_id = var.redcap_api_token_secret_id
-    identity            = "System"
+    identity            = azurerm_user_assigned_identity.ctk_functions_identity.id
   }
 }
-
-resource "azurerm_role_assignment" "ctk_functions_kv_secrets_user" {
-  scope                = var.key_vault_id
-  role_definition_name = "Key Vault Secrets User"
-  principal_id         = azurerm_container_app.ctk_functions.identity[0].principal_id
-}
-
-resource "azurerm_role_assignment" "ctk_functions_acr_pull" {
-  scope                = var.acr_id
-  role_definition_name = "AcrPull"
-  principal_id         = azurerm_container_app.ctk_functions.identity[0].principal_id
-}
-
