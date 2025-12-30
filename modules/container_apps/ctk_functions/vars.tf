@@ -76,11 +76,6 @@ variable "redcap_api_token_secret_id" {
   description = "The Key Vault secret ID for the REDCAP_API_TOKEN."
 }
 
-variable "azure_blob_connection_string_secret_id" {
-  type        = string
-  description = "The Key Vault secret ID for the AZURE_BLOB_CONNECTION_STRING."
-}
-
 variable "key_vault_id" {
   type        = string
   description = "The ID of the Key Vault to grant access to."

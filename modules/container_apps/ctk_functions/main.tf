@@ -50,7 +50,7 @@ resource "azurerm_container_app" "ctk_functions" {
       }
 
       env {
-        name  = "POSTGRES_DB"
+        name  = "POSTGRES_DATABASE"
         value = var.postgres_db
       }
 
@@ -75,7 +75,7 @@ resource "azurerm_container_app" "ctk_functions" {
       }
 
       env {
-        name  = "LANGUAGETOOL_URL"
+        name  = "LANGUAGE_TOOL_URL"
         value = var.languagetool_url
       }
 
@@ -83,23 +83,12 @@ resource "azurerm_container_app" "ctk_functions" {
         name        = "REDCAP_API_TOKEN"
         secret_name = "redcap-api-token"
       }
-
-      env {
-        name        = "AZURE_BLOB_CONNECTION_STRING"
-        secret_name = "azure-blob-connection-string"
-      }
     }
   }
 
   secret {
     name                = "redcap-api-token"
     key_vault_secret_id = var.redcap_api_token_secret_id
-    identity            = "System"
-  }
-
-  secret {
-    name                = "azure-blob-connection-string"
-    key_vault_secret_id = var.azure_blob_connection_string_secret_id
     identity            = "System"
   }
 }
