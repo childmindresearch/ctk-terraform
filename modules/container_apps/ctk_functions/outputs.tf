@@ -1,5 +1,5 @@
 output "fqdn" {
-  value       = azurerm_container_app.ctk_functions.latest_revision_fqdn
+  value       = azurerm_container_app.ctk_functions.ingress[0].fqdn
   description = "The FQDN of the ctk-functions container app."
 }
 

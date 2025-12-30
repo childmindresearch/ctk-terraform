@@ -1,5 +1,5 @@
 output "fqdn" {
-  value       = azurerm_container_app.languagetool.latest_revision_fqdn
+  value       = azurerm_container_app.languagetool.ingress[0].fqdn
   description = "The FQDN of the LanguageTool container app."
 }
 

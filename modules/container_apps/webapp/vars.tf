@@ -13,11 +13,6 @@ variable "resource_group_name" {
   description = "Name of the resource group to put the container app in."
 }
 
-variable "location" {
-  type        = string
-  description = "Azure region to deploy the container app. Required for modifying the resource with a PUT request."
-}
-
 variable "container_app_environment_id" {
   type        = string
   description = "ID of the Container App Environment."
@@ -32,6 +27,16 @@ variable "image_tag" {
   type        = string
   description = "Tag of the container image to deploy."
   default     = "latest"
+}
+
+variable "region_name" {
+  type        = string
+  description = "Azure region to deploy the app."
+}
+
+variable "ctk_functions_url" {
+  type        = string
+  description = "URL of the CTK Functions service."
 }
 
 variable "languagetool_url" {

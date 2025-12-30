@@ -46,6 +46,11 @@ resource "azurerm_container_app" "webapp" {
       memory = "2Gi"
 
       env {
+        name  = "AZURE_FUNCTION_PYTHON_URL"
+        value = var.ctk_functions_url
+      }
+
+      env {
         name  = "LANGUAGETOOL_URL"
         value = var.languagetool_url
       }
@@ -108,7 +113,7 @@ resource "azapi_resource_action" "my_app_auth" {
   method      = "PUT"
 
   body = {
-    location = var.location
+    location = var.region_name
     properties = {
       globalValidation = {
         redirectToProvider          = "azureactivedirectory"

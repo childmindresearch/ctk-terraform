@@ -1,3 +1,4 @@
+
 variable "project_name" {
   type        = string
   description = "Name of the project."
@@ -11,6 +12,11 @@ variable "environment_name" {
 variable "resource_group_name" {
   type        = string
   description = "Name of the resource group to put the container app in."
+}
+
+variable "region_name" {
+  type        = string
+  description = "Region for the User-Assigned Identity."
 }
 
 variable "container_app_environment_id" {

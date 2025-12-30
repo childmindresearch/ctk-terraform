@@ -115,3 +115,4 @@ resource "azurerm_role_assignment" "ctk_functions_acr_pull" {
   role_definition_name = "AcrPull"
   principal_id         = azurerm_container_app.ctk_functions.identity[0].principal_id
 }
+

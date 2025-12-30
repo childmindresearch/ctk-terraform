@@ -1,10 +1,10 @@
 output "fqdn" {
-  value       = azurerm_container_app.webapp.latest_revision_fqdn
+  value       = azurerm_container_app.webapp.ingress[0].fqdn
   description = "The FQDN of the webapp container app."
 }
 
 output "url" {
-  value       = "https://${azurerm_container_app.webapp.latest_revision_fqdn}"
+  value       = "https://${azurerm_container_app.webapp.ingress[0].fqdn}"
   description = "The URL of the webapp container app."
 }
 

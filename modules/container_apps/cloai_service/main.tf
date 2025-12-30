@@ -1,3 +1,26 @@
+resource "azurerm_user_assigned_identity" "cloai_identity" {
+  name                = format("id-%s-%s-cloai-service", var.project_name, var.environment_name)
+  resource_group_name = var.resource_group_name
+  location            = var.region_name
+
+  tags = {
+    environment = var.environment_name
+    project     = var.project_name
+  }
+}
+
+resource "azurerm_role_assignment" "cloai_kv_secrets_user" {
+  scope                = var.key_vault_id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_user_assigned_identity.cloai_identity.principal_id
+}
+
+resource "azurerm_role_assignment" "cloai_acr_pull" {
+  scope                = var.acr_id
+  role_definition_name = "AcrPull"
+  principal_id         = azurerm_user_assigned_identity.cloai_identity.principal_id
+}
+
 resource "azurerm_container_app" "cloai_service" {
   name                         = format("ca-%s-%s-cloai-service", var.project_name, var.environment_name)
   container_app_environment_id = var.container_app_environment_id
@@ -18,19 +41,16 @@ resource "azurerm_container_app" "cloai_service" {
     }
   }
 
+  depends_on = [azurerm_role_assignment.cloai_acr_pull, azurerm_role_assignment.cloai_kv_secrets_user]
+
   identity {
-    type = "SystemAssigned"
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.cloai_identity.id]
   }
 
   registry {
-    server               = var.acr_login_server
-    username             = var.acr_admin_username
-    password_secret_name = "acr-admin-password"
-  }
-
-  secret {
-    name  = "acr-admin-password"
-    value = var.acr_admin_password
+    server   = var.acr_login_server
+    identity = azurerm_user_assigned_identity.cloai_identity.id
   }
 
   template {
@@ -55,18 +75,7 @@ resource "azurerm_container_app" "cloai_service" {
   secret {
     name                = "config-json"
     key_vault_secret_id = var.config_json_secret_id
-    identity            = "System"
+    identity            = azurerm_user_assigned_identity.cloai_identity.id
   }
 }
 
-resource "azurerm_role_assignment" "cloai_kv_secrets_user" {
-  scope                = var.key_vault_id
-  role_definition_name = "Key Vault Secrets User"
-  principal_id         = azurerm_container_app.cloai_service.identity[0].principal_id
-}
-
-resource "azurerm_role_assignment" "cloai_acr_pull" {
-  scope                = var.acr_id
-  role_definition_name = "AcrPull"
-  principal_id         = azurerm_container_app.cloai_service.identity[0].principal_id
-}

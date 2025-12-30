@@ -15,6 +15,7 @@ resource "azurerm_subnet" "container_apps" {
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = var.container_apps_subnet_address_prefixes
+  service_endpoints    = ["Microsoft.KeyVault"]
 }
 
 resource "azurerm_subnet" "database" {
@@ -22,17 +23,6 @@ resource "azurerm_subnet" "database" {
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = var.database_subnet_address_prefixes
-
-  delegation {
-    name = "cosmos-delegation"
-
-    service_delegation {
-      name = "Microsoft.DBforPostgreSQL/flexibleServers"
-      actions = [
-        "Microsoft.Network/virtualNetworks/subnets/join/action"
-      ]
-    }
-  }
 }
 
 resource "azurerm_subnet" "storage" {

@@ -70,3 +70,8 @@ variable "node_server_edition" {
   description = "The server edition for the worker nodes."
   default     = "GeneralPurpose"
 }
+
+variable "private_endpoint_subnet_id" {
+  type        = string
+  description = "The private endpoint's subnet ID."
+}

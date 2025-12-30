@@ -1,5 +1,5 @@
 output "fqdn" {
-  value       = azurerm_container_app.cloai_service.latest_revision_fqdn
+  value       = azurerm_container_app.cloai_service.ingress[0].fqdn
   description = "The FQDN of the cloai-service container app."
 }
 
