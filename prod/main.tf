@@ -25,17 +25,17 @@ data "terraform_remote_state" "shared" {
 module "prod_environment" {
   source = "../modules/environment"
 
-  project_name             = var.project_name
-  environment_name         = "prod"
-  region_name              = var.region_name
-  database_name            = "ctk"
-  acr_id                   = data.terraform_remote_state.shared.outputs.acr_id
-  acr_login_server         = data.terraform_remote_state.shared.outputs.acr_login_server
-  acr_admin_username = data.terraform_remote_state.shared.outputs.acr_admin_username
-  acr_admin_password = data.terraform_remote_state.shared.outputs.acr_admin_password
-  webapp_image_tag         = var.webapp_image_tag
-  cloai_service_image_tag  = var.cloai_service_image_tag
-  ctk_functions_image_tag  = var.ctk_functions_image_tag
-  cloai_model              = var.cloai_model
+  project_name            = var.project_name
+  environment_name        = "prod"
+  region_name             = var.region_name
+  database_name           = "ctk"
+  acr_id                  = data.terraform_remote_state.shared.outputs.acr_id
+  acr_login_server        = data.terraform_remote_state.shared.outputs.acr_login_server
+  acr_admin_username      = data.terraform_remote_state.shared.outputs.acr_admin_username
+  acr_admin_password      = data.terraform_remote_state.shared.outputs.acr_admin_password
+  webapp_image_tag        = var.webapp_image_tag
+  cloai_service_image_tag = var.cloai_service_image_tag
+  ctk_functions_image_tag = var.ctk_functions_image_tag
+  cloai_model             = var.cloai_model
 }
 
