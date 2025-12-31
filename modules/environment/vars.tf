@@ -13,11 +13,6 @@ variable "region_name" {
   description = "Azure region name."
 }
 
-variable "database_name" {
-  type        = string
-  description = "PostgreSQL database name."
-}
-
 variable "acr_id" {
   type        = string
   description = "The ID of the shared Azure Container Registry."
@@ -61,3 +56,4 @@ variable "acr_admin_password" {
   description = "Admin password for the Azure Container Registry."
   sensitive   = true
 }
+

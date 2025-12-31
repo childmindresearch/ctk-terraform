@@ -11,6 +11,7 @@ module "log_analytics" {
   project_name        = var.project_name
   environment_name    = var.environment_name
   region_name         = var.region_name
+  retention_in_days   = 90
 }
 
 module "application_insights" {

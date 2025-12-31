@@ -28,7 +28,6 @@ module "prod_environment" {
   project_name            = var.project_name
   environment_name        = "prod"
   region_name             = var.region_name
-  database_name           = "ctk"
   acr_id                  = data.terraform_remote_state.shared.outputs.acr_id
   acr_login_server        = data.terraform_remote_state.shared.outputs.acr_login_server
   acr_admin_username      = data.terraform_remote_state.shared.outputs.acr_admin_username
