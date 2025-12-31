@@ -1,7 +1,7 @@
 variable "project_name" {
   type        = string
   description = "Name of the project."
-  default = "ctk"
+  default     = "ctk"
 }
 
 variable "region_name" {
@@ -30,5 +30,11 @@ variable "ctk_functions_image_tag" {
 variable "cloai_model" {
   type        = string
   description = "CLOAI model to use."
-  default = "sonnet-4.0-v1"
+  default     = "sonnet-4.0-v1"
 }
+
+variable "subscription_id" {
+  type        = string
+  description = "Azure Subscription ID."
+}
+

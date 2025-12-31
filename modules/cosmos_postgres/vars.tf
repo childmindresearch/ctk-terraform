@@ -38,13 +38,13 @@ variable "coordinator_storage_quota_in_mb" {
 variable "coordinator_vcore_count" {
   type        = number
   description = "Number of vCores for the coordinator node."
-  default     = 2
+  default     = 1
 }
 
 variable "coordinator_server_edition" {
   type        = string
   description = "The server edition for the coordinator node."
-  default     = "BurstableGeneralPurpose"
+  default     = "BurstableMemoryOptimized"
 }
 
 variable "node_count" {
