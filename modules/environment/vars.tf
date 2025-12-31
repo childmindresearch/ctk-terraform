@@ -57,3 +57,8 @@ variable "acr_admin_password" {
   sensitive   = true
 }
 
+variable "ad_redirect_uris" {
+  type        = list(string)
+  description = "URIs to redirect to for authentication. The container's FQDN is added by default."
+}
+

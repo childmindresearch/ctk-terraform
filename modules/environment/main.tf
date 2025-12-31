@@ -96,10 +96,10 @@ module "languagetool" {
 module "active_directory_app_registration" {
   source       = "../active_directory_app_registration"
   display_name = "ad-${var.project_name}-webapp-${var.environment_name}"
-  redirect_uris = [
-    "https://ca-${var.project_name}-${var.environment_name}-webapp.${module.container_app_environment.default_domain}/.auth/login/aad/callback",
-    "https://cliniciantoolkit.childmind.org/.auth/login/aad/callback"
-  ]
+  redirect_uris = concat([
+    "https://ca-${var.project_name}-${var.environment_name}-webapp.${module.container_app_environment.default_domain}/.auth/login/aad/callback"], // Cannot use webapp FQDN due to circular reference.
+    var.ad_redirect_uris
+  )
 }
 
 
