@@ -1,3 +1,20 @@
+resource "azurerm_user_assigned_identity" "webapp_identity" {
+  name                = format("id-%s-%s-webapp", var.project_name, var.environment_name)
+  resource_group_name = var.resource_group_name
+  location            = var.region_name
+
+  tags = {
+    environment = var.environment_name
+    project     = var.project_name
+  }
+}
+
+resource "azurerm_role_assignment" "webapp_acr_pull" {
+  scope                = var.acr_id
+  role_definition_name = "AcrPull"
+  principal_id         = azurerm_user_assigned_identity.webapp_identity.principal_id
+}
+
 resource "azurerm_container_app" "webapp" {
   name                         = format("ca-%s-%s-webapp", var.project_name, var.environment_name)
   container_app_environment_id = var.container_app_environment_id
@@ -18,8 +35,11 @@ resource "azurerm_container_app" "webapp" {
     }
   }
 
+  depends_on = [azurerm_role_assignment.webapp_acr_pull]
+
   identity {
-    type = "SystemAssigned"
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.webapp_identity.id]
   }
 
   registry {
@@ -96,12 +116,6 @@ resource "azurerm_container_app" "webapp" {
       }
     }
   }
-}
-
-resource "azurerm_role_assignment" "webapp_acr_pull" {
-  scope                = var.acr_id
-  role_definition_name = "AcrPull"
-  principal_id         = azurerm_container_app.webapp.identity[0].principal_id
 }
 
 // AzureRM does not yet support configuring Authentication for Container Apps,
