@@ -136,7 +136,7 @@ module "ctk_functions" {
   postgres_password            = module.cosmos_postgres.administrator_password
   cloai_model                  = var.cloai_model
   cloai_service_url            = "https://${module.cloai_service.fqdn}/v1"
-  languagetool_url             = "https://${module.languagetool.fqdn}/v2"
+  languagetool_url             = "https://${module.languagetool.fqdn}/v2" // Note: ctk-functions expects /v2 included here; webapp does not.
   redcap_api_token_secret_id   = "${module.key_vault.vault_uri}secrets/redcap-api-token"
   key_vault_id                 = module.key_vault.id
 }
@@ -153,7 +153,7 @@ module "webapp" {
   acr_admin_password                     = var.acr_admin_password
   acr_id                                 = var.acr_id
   ctk_functions_url                      = "https://${module.ctk_functions.fqdn}"
-  languagetool_url                       = "https://${module.languagetool.fqdn}/v2"
+  languagetool_url                       = "https://${module.languagetool.fqdn}" // Note: ctk-functions expects /v2 included here; webapp does not.
   image_tag                              = var.webapp_image_tag
   postgres_host                          = module.cosmos_postgres.host
   postgres_port                          = module.cosmos_postgres.port
