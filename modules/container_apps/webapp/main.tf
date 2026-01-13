@@ -37,6 +37,12 @@ resource "azurerm_container_app" "webapp" {
 
   depends_on = [azurerm_role_assignment.webapp_acr_pull]
 
+  lifecycle {
+    ignore_changes = [
+      ingress[0].custom_domain
+    ]
+  }
+
   identity {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.webapp_identity.id]
@@ -156,3 +162,50 @@ resource "azapi_resource_action" "my_app_auth" {
   }
 }
 
+resource "azapi_resource" "managed_cert" {
+  type      = "Microsoft.App/managedEnvironments/managedCertificates@2024-03-01"
+  parent_id = var.container_app_environment_id
+  name      = format("cert-%s-%s", var.project_name, var.environment_name)
+  location  = var.region_name
+
+  body = {
+    properties = {
+      subjectName             = var.custom_domain
+      domainControlValidation = "CNAME"
+    }
+  }
+}
+
+resource "azapi_update_resource" "webapp_bind_domain" {
+  type        = "Microsoft.App/containerApps@2024-03-01"
+  resource_id = azurerm_container_app.webapp.id
+
+  body = {
+    properties = {
+      configuration = {
+        secrets = [
+          {
+            name  = "acr-admin-password"
+            value = var.acr_admin_password
+          },
+          {
+            name  = "microsoft-provider-authentication-secret"
+            value = var.azure_ad_client_secret
+          }
+        ]
+
+        ingress = {
+          customDomains = [
+            {
+              name          = var.custom_domain
+              bindingType   = "SniEnabled"
+              certificateId = azapi_resource.managed_cert.id
+            }
+          ]
+        }
+      }
+    }
+  }
+
+  depends_on = [azapi_resource.managed_cert]
+}

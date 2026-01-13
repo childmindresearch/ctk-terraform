@@ -62,3 +62,7 @@ variable "ad_redirect_uris" {
   description = "URIs to redirect to for authentication. The container's FQDN is added by default."
 }
 
+variable "webapp_custom_domain" {
+  type        = string
+  description = "The custom domain to associate with the webapp container."
+}

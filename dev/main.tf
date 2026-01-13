@@ -37,5 +37,6 @@ module "dev_environment" {
   ctk_functions_image_tag = var.ctk_functions_image_tag
   cloai_model             = var.cloai_model
   ad_redirect_uris        = ["https://cliniciantoolkit-dev.childmind.org/.auth/login/aad/callback"]
+  webapp_custom_domain    = "cliniciantoolkit-dev.childmind.org"
 }
 

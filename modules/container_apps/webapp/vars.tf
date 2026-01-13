@@ -113,3 +113,8 @@ variable "application_insights_connection_string" {
   description = "Connection string for Application Insights."
   sensitive   = true
 }
+
+variable "custom_domain" {
+  type        = string
+  description = "The custom domain to associate with the container app."
+}

@@ -165,4 +165,5 @@ module "webapp" {
   azure_ad_client_secret                 = module.active_directory_app_registration.client_secret
   azure_ad_tenant_id                     = module.active_directory_app_registration.tenant_id
   application_insights_connection_string = module.application_insights.connection_string
+  custom_domain                          = var.webapp_custom_domain
 }
