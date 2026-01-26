@@ -18,8 +18,9 @@ resource "azuread_application" "app" {
 }
 
 resource "azuread_service_principal" "sp" {
-  client_id = azuread_application.app.client_id
-  owners    = [data.azuread_client_config.current.object_id]
+  client_id                    = azuread_application.app.client_id
+  owners                       = [data.azuread_client_config.current.object_id]
+  app_role_assignment_required = true
 
   lifecycle {
     prevent_destroy = true
