@@ -41,3 +41,8 @@ variable "subnet_ids" {
   description = "List of subnet IDs that can access the Key Vault."
   default     = []
 }
+
+variable "owner_group_object_id" {
+  description = "Object ID of the owner group of these resources."
+  type        = string
+}

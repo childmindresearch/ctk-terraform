@@ -1,8 +1,11 @@
 data "azuread_client_config" "current" {}
+data "azuread_group" "owner_group" {
+  object_id = var.owner_group_object_id
+}
 
 resource "azuread_application" "app" {
   display_name = var.display_name
-  owners       = [data.azuread_client_config.current.object_id]
+  owners       = data.azuread_group.owner_group.members
 
   web {
     redirect_uris = var.redirect_uris
@@ -19,8 +22,8 @@ resource "azuread_application" "app" {
 
 resource "azuread_service_principal" "sp" {
   client_id                    = azuread_application.app.client_id
-  owners                       = [data.azuread_client_config.current.object_id]
   app_role_assignment_required = true
+  owners                       = data.azuread_group.owner_group.members
 
   lifecycle {
     prevent_destroy = true

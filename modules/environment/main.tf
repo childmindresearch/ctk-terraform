@@ -1,3 +1,7 @@
+data "azuread_group" "ctk_owners" {
+  display_name = "CTK-Owners"
+}
+
 module "resource_group" {
   source           = "../resource_group"
   project_name     = var.project_name
@@ -41,12 +45,13 @@ module "storage_account" {
 }
 
 module "key_vault" {
-  source              = "../key_vault"
-  resource_group_name = module.resource_group.name
-  project_name        = var.project_name
-  environment_name    = var.environment_name
-  region_name         = var.region_name
-  subnet_ids          = [module.virtual_network.storage_subnet_id, module.virtual_network.container_apps_subnet_id]
+  source                = "../key_vault"
+  resource_group_name   = module.resource_group.name
+  project_name          = var.project_name
+  environment_name      = var.environment_name
+  region_name           = var.region_name
+  subnet_ids            = [module.virtual_network.storage_subnet_id, module.virtual_network.container_apps_subnet_id]
+  owner_group_object_id = data.azuread_group.ctk_owners.object_id
 }
 
 resource "random_password" "postgres_admin_password" {
@@ -100,6 +105,7 @@ module "active_directory_app_registration" {
     "https://ca-${var.project_name}-${var.environment_name}-webapp.${module.container_app_environment.default_domain}/.auth/login/aad/callback"], // Cannot use webapp FQDN due to circular reference.
     var.ad_redirect_uris
   )
+  owner_group_object_id = data.azuread_group.ctk_owners.object_id
 }
 
 
