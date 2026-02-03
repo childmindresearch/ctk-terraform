@@ -67,7 +67,7 @@ jobs:
               '</details>\n\n' +
               '---\n\n' +
               '📥 You can also download the diagram from the [workflow artifacts]' +
-              `(https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}).`;
+              '(https://github.com/' + context.repo.owner + '/' + context.repo.repo + '/actions/runs/' + context.runId + ').';
 
             // Find existing comment
             const comments = await github.rest.issues.listComments({
