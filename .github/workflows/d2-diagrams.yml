@@ -60,21 +60,21 @@ jobs:
             // Create comment body with embedded SVG
             const commentBody = `## 🏗️ Architecture Diagram Updated
 
-            The D2 architecture diagram has been regenerated based on the changes in this PR.
+The D2 architecture diagram has been regenerated based on the changes in this PR.
 
-            ### Production Architecture
+### Production Architecture
 
-            <details>
-            <summary>Click to view diagram</summary>
+<details>
+<summary>Click to view diagram</summary>
 
-            ${svgContent}
+${svgContent}
 
-            </details>
+</details>
 
-            ---
+---
 
-            📥 You can also download the diagram from the [workflow artifacts](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}).
-            `;
+📥 You can also download the diagram from the [workflow artifacts](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}).
+`;
 
             // Find existing comment
             const comments = await github.rest.issues.listComments({
