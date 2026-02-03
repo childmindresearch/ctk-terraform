@@ -7,19 +7,9 @@ direction: right
 # Import icons first
 ...@icons
 
-# Import all component diagrams
+# Import component diagrams that define reusable elements
 ...@shared
-...@network
-...@database
-...@container_environment
-...@supporting_services
-...@container_apps
 ...@identity
-
-# Production Resource Group
-prod_rg: Resource Group\n(prod) {
-  class: resource_group
-}
 
 # External Users
 users: Users {
@@ -27,49 +17,120 @@ users: Users {
   shape: person
 }
 
+# Production Resource Group - contains all prod resources
+prod_rg: Production Environment {
+  class: resource_group
+  
+  # Virtual Network with subnets
+  vnet: Virtual Network {
+    class: virtual_network
+    
+    container_apps_subnet: Container Apps Subnet {
+      class: subnet
+    }
+    
+    database_subnet: Database Subnet {
+      class: subnet
+    }
+    
+    storage_subnet: Storage Subnet {
+      class: subnet
+    }
+  }
+  
+  # Container App Environment with apps
+  container_app_env: Container App Environment {
+    class: container_app_environment
+    
+    webapp: Web App {
+      class: container_app
+    }
+    
+    cloai_service: CLO AI Service {
+      class: container_app
+    }
+    
+    ctk_functions: CTK Functions {
+      class: container_app
+    }
+    
+    languagetool: LanguageTool {
+      class: container_app
+    }
+    
+    # Container app relationships
+    webapp -> ctk_functions: calls API
+    webapp -> languagetool: grammar checks
+    ctk_functions -> cloai_service: AI requests
+    ctk_functions -> languagetool: grammar checks
+  }
+  
+  # Database
+  cosmos_postgres: Cosmos PostgreSQL Cluster {
+    class: cosmos_db
+    shape: cylinder
+  }
+  
+  private_endpoint: Private Endpoint (Database) {
+    class: private_endpoint
+  }
+  
+  private_dns_zone: Private DNS Zone {
+    class: dns_zone
+  }
+  
+  # Supporting Services
+  key_vault: Key Vault {
+    class: key_vault
+  }
+  
+  storage_account: Storage Account {
+    class: storage_account
+    shape: cylinder
+  }
+  
+  log_analytics: Log Analytics Workspace {
+    class: log_analytics
+  }
+  
+  app_insights: Application Insights {
+    class: app_insights
+  }
+}
+
 # High-level architecture connections
 
-# Shared resources used by prod
-acr -> webapp: provides images
-acr -> cloai_service: provides images
-acr -> ctk_functions: provides images
+# Shared resources (ACR) to container apps
+shared_rg.acr -> prod_rg.container_app_env.webapp: provides images
+shared_rg.acr -> prod_rg.container_app_env.cloai_service: provides images
+shared_rg.acr -> prod_rg.container_app_env.ctk_functions: provides images
 
 # Network infrastructure
-prod_rg -> vnet: contains
-vnet.container_apps_subnet -> container_app_env: hosts
-vnet.database_subnet -> private_endpoint: hosts
-vnet.storage_subnet -> storage_account: hosts
-vnet.storage_subnet -> key_vault: connects to
-
-# Container environment
-container_app_env -> webapp: runs
-container_app_env -> cloai_service: runs
-container_app_env -> ctk_functions: runs
-container_app_env -> languagetool: runs
+prod_rg.vnet.container_apps_subnet -> prod_rg.container_app_env: hosts
+prod_rg.vnet.database_subnet -> prod_rg.private_endpoint: hosts
+prod_rg.vnet.storage_subnet -> prod_rg.storage_account: hosts
+prod_rg.vnet.storage_subnet -> prod_rg.key_vault: connects to
 
 # Database connections
-private_endpoint -> vnet: connects to
-private_dns_zone -> vnet: linked to
-webapp -> cosmos_postgres: queries
-ctk_functions -> cosmos_postgres: queries
+prod_rg.private_endpoint -> prod_rg.cosmos_postgres: connects to
+prod_rg.private_endpoint -> prod_rg.vnet: connects to
+prod_rg.private_dns_zone -> prod_rg.vnet: linked to
+prod_rg.container_app_env.webapp -> prod_rg.cosmos_postgres: queries
+prod_rg.container_app_env.ctk_functions -> prod_rg.cosmos_postgres: queries
 
 # Supporting services
-prod_rg -> key_vault: contains
-prod_rg -> storage_account: contains
-prod_rg -> log_analytics: contains
-prod_rg -> app_insights: contains
+prod_rg.key_vault -> prod_rg.container_app_env.cloai_service: provides secrets
+prod_rg.key_vault -> prod_rg.container_app_env.ctk_functions: provides secrets
 
-key_vault -> cloai_service: provides secrets
-key_vault -> ctk_functions: provides secrets
+prod_rg.container_app_env.webapp -> prod_rg.storage_account: stores files
 
-webapp -> storage_account: stores files
-
-container_app_env -> log_analytics: sends logs to
-webapp -> app_insights: telemetry
+prod_rg.container_app_env -> prod_rg.log_analytics: sends logs to
+prod_rg.container_app_env.webapp -> prod_rg.app_insights: telemetry
+prod_rg.app_insights -> prod_rg.log_analytics: sends logs to
 
 # Authentication
-azure_ad -> webapp: authenticates users
-users -> webapp: HTTPS {
+azure_ad -> prod_rg.container_app_env.webapp: authenticates users
+users -> prod_rg.container_app_env.webapp: HTTPS {
   style.stroke: "#0078D4"
   style.stroke-width: 3
 }

@@ -1,7 +1,30 @@
-# Container App Environment
+# Container App Environment and Container Apps
 
 ...@icons
 
-container_app_env: Container App\nEnvironment {
+container_app_env: Container App Environment {
   class: container_app_environment
+  
+  # Container Apps inside the environment
+  webapp: Web App {
+    class: container_app
+  }
+  
+  cloai_service: CLO AI Service {
+    class: container_app
+  }
+  
+  ctk_functions: CTK Functions {
+    class: container_app
+  }
+  
+  languagetool: LanguageTool {
+    class: container_app
+  }
+  
+  # Container app relationships
+  webapp -> ctk_functions: calls API
+  webapp -> languagetool: grammar checks
+  ctk_functions -> cloai_service: AI requests
+  ctk_functions -> languagetool: grammar checks
 }

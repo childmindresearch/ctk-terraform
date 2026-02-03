@@ -32,15 +32,23 @@ jobs:
       - name: Build D2 diagrams
         run: |
           mkdir -p diagrams/output
-          d2 diagrams/main.d2 diagrams/output/architecture.svg
-          echo "✅ Generated architecture.svg"
+          d2 diagrams/main.d2 diagrams/output/architecture.png
+          echo "✅ Generated architecture.png"
 
       - name: Upload diagram as artifact
         uses: actions/upload-artifact@v4
         with:
           name: architecture-diagram
-          path: diagrams/output/architecture.svg
+          path: diagrams/output/architecture.png
           retention-days: 90
+
+      - name: Upload diagram to temporary storage
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: architecture-diagram-pr-${{ github.event.pull_request.number }}
+          path: diagrams/output/architecture.png
+          retention-days: 1
 
       - name: Post diagram to PR comment
         if: github.event_name == 'pull_request'
@@ -50,21 +58,19 @@ jobs:
             const fs = require('fs');
             const path = require('path');
 
-            // Read the SVG file
-            const svgPath = path.join(
+            // Read the PNG file and convert to base64
+            const pngPath = path.join(
               process.env.GITHUB_WORKSPACE,
-              'diagrams/output/architecture.svg'
+              'diagrams/output/architecture.png'
             );
-            const svgContent = fs.readFileSync(svgPath, 'utf8');
+            const pngBuffer = fs.readFileSync(pngPath);
+            const pngBase64 = pngBuffer.toString('base64');
 
-            // Create comment body with embedded SVG
+            // Create comment body with embedded PNG as base64 image
             const commentBody = '## 🏗️ Architecture Diagram Updated\n\n' +
               'The D2 architecture diagram has been regenerated based on the changes in this PR.\n\n' +
               '### Production Architecture\n\n' +
-              '<details>\n' +
-              '<summary>Click to view diagram</summary>\n\n' +
-              svgContent + '\n\n' +
-              '</details>\n\n' +
+              '![Architecture Diagram](data:image/png;base64,' + pngBase64 + ')\n\n' +
               '---\n\n' +
               '📥 You can also download the diagram from the [workflow artifacts]' +
               '(https://github.com/' + context.repo.owner + '/' + context.repo.repo + '/actions/runs/' + context.runId + ').';

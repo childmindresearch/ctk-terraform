@@ -3,14 +3,11 @@
 
 ...@icons
 
-shared_rg: Resource Group\n(shared) {
+shared_rg: Shared Resource Group {
   class: resource_group
+  
+  acr: Azure Container Registry {
+    class: container_registry
+    shape: cylinder
+  }
 }
-
-acr: Azure Container Registry\n(acrctkshared) {
-  class: container_registry
-  shape: cylinder
-}
-
-# Shared resource relationships
-shared_rg -> acr: contains
