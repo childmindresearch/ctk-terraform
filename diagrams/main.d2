@@ -4,6 +4,9 @@
 
 direction: right
 
+# Import icons first
+...@icons
+
 # Import all component diagrams
 ...@shared
 ...@network
@@ -15,12 +18,12 @@ direction: right
 
 # Production Resource Group
 prod_rg: Resource Group\n(prod) {
-  icon: https://icons.terrastruct.com/azure%2FGeneral%2F10002-icon-service-Resource-Groups.svg
+  class: resource_group
 }
 
 # External Users
 users: Users {
-  icon: https://icons.terrastruct.com/azure%2FIdentity%2F10215-icon-service-Users.svg
+  class: users
   shape: person
 }
 
