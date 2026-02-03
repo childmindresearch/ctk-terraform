@@ -113,7 +113,7 @@ prod_rg.vnet.storage_subnet -> prod_rg.key_vault: connects to
 
 # Database connections
 prod_rg.private_endpoint -> prod_rg.cosmos_postgres: connects to
-prod_rg.private_endpoint -> prod_rg.vnet: connects to
+prod_rg.vnet -> prod_rg.private_endpoint: connects to
 prod_rg.private_dns_zone -> prod_rg.vnet: linked to
 prod_rg.container_app_env.webapp -> prod_rg.cosmos_postgres: queries
 prod_rg.container_app_env.ctk_functions -> prod_rg.cosmos_postgres: queries
