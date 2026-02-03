@@ -1,0 +1,17 @@
+# Cosmos PostgreSQL Database
+
+cosmos_postgres: Cosmos PostgreSQL\nCluster {
+  icon: https://icons.terrastruct.com/azure%2FDatabases%2F10124-icon-service-Azure-Cosmos-DB.svg
+  shape: cylinder
+}
+
+private_endpoint: Private Endpoint\n(Database) {
+  icon: https://icons.terrastruct.com/azure%2FNetworking%2F10064-icon-service-Private-Link.svg
+}
+
+private_dns_zone: Private DNS Zone\n(postgres.cosmos.azure.com) {
+  icon: https://icons.terrastruct.com/azure%2FNetworking%2F10065-icon-service-DNS-Zones.svg
+}
+
+# Database connections
+private_endpoint -> cosmos_postgres: connects to

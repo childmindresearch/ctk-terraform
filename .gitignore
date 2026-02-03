@@ -4,3 +4,4 @@
 .terraform
 *.plan
 **/plan.json
+diagrams/output/

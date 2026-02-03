@@ -10,7 +10,21 @@ The infrastructure is organized into three main components:
 - **`dev/`**: Development environment
 - **`prod/`**: Production environment
 
-![Architecture Diagram](./visualize/ctk_terraform_architecture.png)
+### Architecture Diagrams
+
+The architecture is documented using [D2 diagrams](https://d2lang.com/) located in the `diagrams/` directory. These diagrams are automatically built and updated when changes are made to the D2 files.
+
+- **Main Diagram**: `diagrams/main.d2` - Complete production architecture overview
+- **Module Diagrams**: Individual component diagrams in `diagrams/` directory
+  - `shared.d2` - Shared resources (ACR)
+  - `network.d2` - Virtual network and subnets
+  - `database.d2` - Cosmos PostgreSQL database
+  - `container_environment.d2` - Container App Environment
+  - `container_apps.d2` - Web app and microservices
+  - `supporting_services.d2` - Key Vault, Storage, Monitoring
+  - `identity.d2` - Azure AD authentication
+
+The diagrams are automatically compiled to SVG on every pull request and available as workflow artifacts.
 
 ## Deployment Order
 

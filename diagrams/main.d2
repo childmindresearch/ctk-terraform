@@ -1,0 +1,71 @@
+# CTK Terraform Production Architecture
+# This diagram shows the complete infrastructure for the production environment
+
+direction: right
+
+# Import all component diagrams
+...@shared
+...@network
+...@database
+...@container_environment
+...@supporting_services
+...@container_apps
+...@identity
+
+# Production Resource Group
+prod_rg: Resource Group\n(prod) {
+  icon: https://icons.terrastruct.com/azure%2FGeneral%2F10002-icon-service-Resource-Groups.svg
+}
+
+# External Users
+users: Users {
+  icon: https://icons.terrastruct.com/azure%2FIdentity%2F10215-icon-service-Users.svg
+  shape: person
+}
+
+# High-level architecture connections
+
+# Shared resources used by prod
+acr -> webapp: provides images
+acr -> cloai_service: provides images
+acr -> ctk_functions: provides images
+
+# Network infrastructure
+prod_rg -> vnet: contains
+vnet.container_apps_subnet -> container_app_env: hosts
+vnet.database_subnet -> private_endpoint: hosts
+vnet.storage_subnet -> storage_account: hosts
+vnet.storage_subnet -> key_vault: connects to
+
+# Container environment
+container_app_env -> webapp: runs
+container_app_env -> cloai_service: runs
+container_app_env -> ctk_functions: runs
+container_app_env -> languagetool: runs
+
+# Database connections
+private_endpoint -> vnet: connects to
+private_dns_zone -> vnet: linked to
+webapp -> cosmos_postgres: queries
+ctk_functions -> cosmos_postgres: queries
+
+# Supporting services
+prod_rg -> key_vault: contains
+prod_rg -> storage_account: contains
+prod_rg -> log_analytics: contains
+prod_rg -> app_insights: contains
+
+key_vault -> cloai_service: provides secrets
+key_vault -> ctk_functions: provides secrets
+
+webapp -> storage_account: stores files
+
+container_app_env -> log_analytics: sends logs to
+webapp -> app_insights: telemetry
+
+# Authentication
+azure_ad -> webapp: authenticates users
+users -> webapp: HTTPS {
+  style.stroke: "#0078D4"
+  style.stroke-width: 3
+}

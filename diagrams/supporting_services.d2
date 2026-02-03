@@ -1,0 +1,21 @@
+# Supporting Services
+
+key_vault: Key Vault {
+  icon: https://icons.terrastruct.com/azure%2FSecurity%2F10245-icon-service-Key-Vaults.svg
+}
+
+storage_account: Storage Account {
+  icon: https://icons.terrastruct.com/azure%2FStorage%2F10086-icon-service-Storage-Accounts.svg
+  shape: cylinder
+}
+
+log_analytics: Log Analytics\nWorkspace {
+  icon: https://icons.terrastruct.com/azure%2FMonitor%2F00004-icon-service-Log-Analytics-Workspaces.svg
+}
+
+app_insights: Application Insights {
+  icon: https://icons.terrastruct.com/azure%2FMonitor%2F00009-icon-service-Application-Insights.svg
+}
+
+# Supporting service relationships
+app_insights -> log_analytics: sends logs to

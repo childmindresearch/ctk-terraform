@@ -1,0 +1,23 @@
+# Container Apps
+
+webapp: Web App\n(Container App) {
+  icon: https://icons.terrastruct.com/azure%2FContainers%2F10103-icon-service-Container-Apps.svg
+}
+
+cloai_service: CLO AI Service\n(Container App) {
+  icon: https://icons.terrastruct.com/azure%2FContainers%2F10103-icon-service-Container-Apps.svg
+}
+
+ctk_functions: CTK Functions\n(Container App) {
+  icon: https://icons.terrastruct.com/azure%2FContainers%2F10103-icon-service-Container-Apps.svg
+}
+
+languagetool: LanguageTool\n(Container App) {
+  icon: https://icons.terrastruct.com/azure%2FContainers%2F10103-icon-service-Container-Apps.svg
+}
+
+# Container app relationships
+webapp -> ctk_functions: calls API
+webapp -> languagetool: grammar checks
+ctk_functions -> cloai_service: AI requests
+ctk_functions -> languagetool: grammar checks
