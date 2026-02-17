@@ -21,7 +21,7 @@ resource "azurerm_container_app" "languagetool" {
   template {
     container {
       name   = format("ca-%s-languagetool-%s", var.project_name, var.environment_name)
-      image  = "erikvl87/languagetool:6.5"
+      image  = "erikvl87/languagetool:6.7"
       cpu    = 1
       memory = "2Gi"
     }
