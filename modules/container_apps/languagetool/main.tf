@@ -19,6 +19,8 @@ resource "azurerm_container_app" "languagetool" {
   }
 
   template {
+    min_replicas = 0
+    max_replicas = 1
     container {
       name   = format("ca-%s-languagetool-%s", var.project_name, var.environment_name)
       image  = "erikvl87/languagetool:6.7"

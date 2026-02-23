@@ -54,6 +54,8 @@ resource "azurerm_container_app" "ctk_functions" {
     identity = azurerm_user_assigned_identity.ctk_functions_identity.id
   }
   template {
+    min_replicas = 0
+    max_replicas = 1
     container {
       name   = format("ca-%s-ctk-functions-%s", var.project_name, var.environment_name)
       image  = "${var.acr_login_server}/childmindresearch/ctk-functions:${var.image_tag}"

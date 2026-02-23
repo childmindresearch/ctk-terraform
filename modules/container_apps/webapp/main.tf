@@ -65,6 +65,8 @@ resource "azurerm_container_app" "webapp" {
   }
 
   template {
+    min_replicas = 0
+    max_replicas = 1
     container {
       name   = format("ca-%s-%s-webapp", var.project_name, var.environment_name)
       image  = "${var.acr_login_server}/childmindresearch/ctk-webapp:${var.image_tag}"
