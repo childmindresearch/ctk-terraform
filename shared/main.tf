@@ -33,9 +33,10 @@ module "shared_container_registry" {
 }
 
 module "storage_account" {
-  source              = "../modules/storage_account"
-  resource_group_name = module.shared_resource_group.name
-  project_name        = var.project_name
-  environment_name    = local.environment_name
-  region_name         = var.region_name
+  source                        = "../modules/storage_account"
+  resource_group_name           = module.shared_resource_group.name
+  project_name                  = var.project_name
+  environment_name              = local.environment_name
+  region_name                   = var.region_name
+  public_network_access_enabled = true
 }

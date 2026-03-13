@@ -41,3 +41,9 @@ variable "storage_subnet_id" {
   description = "The ID of the storage subnet for VNet integration."
   default     = null
 }
+
+variable "public_network_access_enabled" {
+  type        = bool
+  description = "Whether the public network access is enabled"
+  default     = true
+}
