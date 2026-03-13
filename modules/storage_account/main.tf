@@ -8,9 +8,10 @@ resource "azurerm_storage_account" "storage" {
 
   min_tls_version                 = "TLS1_2"
   allow_nested_items_to_be_public = false
+  public_network_access_enabled   = var.public_network_access_enabled
 
   network_rules {
-    default_action             = "Deny"
+    default_action             = var.public_network_access_enabled ? "Allow" : "Deny"
     bypass                     = ["AzureServices"]
     virtual_network_subnet_ids = var.storage_subnet_id != null ? [var.storage_subnet_id] : []
   }
