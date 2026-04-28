@@ -55,6 +55,11 @@ resource "azurerm_container_app" "webapp" {
   }
 
   secret {
+    name  = "redcap-cmi-api-token"
+    value = var.redcap_cmi_api_token
+  }
+
+  secret {
     name  = "acr-admin-password"
     value = var.acr_admin_password
   }
@@ -122,6 +127,12 @@ resource "azurerm_container_app" "webapp" {
         name  = "APPLICATIONINSIGHTS_CONNECTION_STRING"
         value = var.application_insights_connection_string
       }
+
+      env {
+        name        = "REDCAP_CMI_API_TOKEN"
+        secret_name = "redcap-cmi-api-token"
+      }
+
     }
   }
 }

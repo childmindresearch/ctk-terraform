@@ -108,6 +108,12 @@ variable "acr_admin_password" {
   sensitive   = true
 }
 
+variable "redcap_cmi_api_token" {
+  type        = string
+  description = "API Token for CMI-RedCap."
+  sensitive   = true
+}
+
 variable "application_insights_connection_string" {
   type        = string
   description = "Connection string for Application Insights."
