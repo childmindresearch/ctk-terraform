@@ -27,7 +27,7 @@ variable "ctk_functions_image_tag" {
 variable "cloai_model" {
   type        = string
   description = "CLOAI model to use."
-  default     = "sonnet-4.0-v1"
+  default     = "opus-4.6-v1"
 }
 
 variable "subscription_id" {

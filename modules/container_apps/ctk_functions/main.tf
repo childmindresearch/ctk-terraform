@@ -63,31 +63,6 @@ resource "azurerm_container_app" "ctk_functions" {
       memory = "2Gi"
 
       env {
-        name  = "POSTGRES_HOST"
-        value = var.postgres_host
-      }
-
-      env {
-        name  = "POSTGRES_PORT"
-        value = var.postgres_port
-      }
-
-      env {
-        name  = "POSTGRES_DATABASE"
-        value = var.postgres_db
-      }
-
-      env {
-        name  = "POSTGRES_USER"
-        value = var.postgres_user
-      }
-
-      env {
-        name  = "POSTGRES_PASSWORD"
-        value = var.postgres_password
-      }
-
-      env {
         name  = "CLOAI_MODEL"
         value = var.cloai_model
       }
@@ -103,15 +78,34 @@ resource "azurerm_container_app" "ctk_functions" {
       }
 
       env {
-        name        = "REDCAP_API_TOKEN"
-        secret_name = "redcap-api-token"
+        name        = "REDCAP_HBN_API_TOKEN"
+        secret_name = "redcap-hbn-api-token"
+      }
+
+      env {
+        name        = "REDCAP_CMI_API_TOKEN"
+        secret_name = "redcap-cmi-api-token"
+      }
+      env {
+        name        = "REDCAP_PYRITE_API_TOKEN"
+        secret_name = "redcap-pyrite-api-token"
       }
     }
   }
 
   secret {
-    name                = "redcap-api-token"
-    key_vault_secret_id = var.redcap_api_token_secret_id
+    name                = "redcap-hbn-api-token"
+    key_vault_secret_id = var.redcap_hbn_api_token_secret_id
+    identity            = azurerm_user_assigned_identity.ctk_functions_identity.id
+  }
+  secret {
+    name                = "redcap-cmi-api-token"
+    key_vault_secret_id = var.redcap_cmi_api_token_secret_id
+    identity            = azurerm_user_assigned_identity.ctk_functions_identity.id
+  }
+  secret {
+    name                = "redcap-pyrite-api-token"
+    key_vault_secret_id = var.redcap_pyrite_api_token_secret_id
     identity            = azurerm_user_assigned_identity.ctk_functions_identity.id
   }
 }
