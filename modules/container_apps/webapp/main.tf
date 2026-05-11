@@ -204,6 +204,10 @@ resource "azapi_update_resource" "webapp_bind_domain" {
           {
             name  = "microsoft-provider-authentication-secret"
             value = var.azure_ad_client_secret
+          },
+          {
+            name  = "redcap-cmi-api-token"
+            value = var.redcap_cmi_api_token
           }
         ]
 
