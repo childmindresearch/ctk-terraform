@@ -16,9 +16,11 @@ The infrastructure is organized into three main components:
 
 - **Terraform ≥ 1.0** — [Install](https://developer.hashicorp.com/terraform/install)
 - **Azure CLI** — [Install](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli); authenticate before running any commands:
+
   ```bash
   az login
   ```
+
 - **just** — command runner used for all deployment commands ([github.com/casey/just](https://github.com/casey/just))
 
 ### Azure State Backend
@@ -32,8 +34,7 @@ Terraform state is stored in Azure Blob Storage. You need read/write access to t
 ### Optional (development / documentation)
 
 - **terraform-docs** — regenerates module documentation (`just docs`)
-- **pre-commit** — git hook that auto-runs terraform-docs on `.tf` file changes
-- **Graphviz (`dot`)** — required for `just graph` to produce PNG architecture diagrams
+- **prek** — git hook that auto-runs terraform-docs on `.tf` file changes
 
 ## Deployment Order
 
@@ -81,4 +82,3 @@ Both dev and prod environments pull images from this shared registry using:
 
 - System-assigned managed identities
 - AcrPull role assignments
-
