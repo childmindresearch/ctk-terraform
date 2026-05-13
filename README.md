@@ -58,3 +58,4 @@ Both dev and prod environments pull images from this shared registry using:
 
 - System-assigned managed identities
 - AcrPull role assignments
+

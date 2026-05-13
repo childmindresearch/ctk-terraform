@@ -5,22 +5,3 @@
 *.plan
 **/plan.json
 
-# Generated terraform-docs README files (root README.md is NOT ignored)
-shared/README.md
-dev/README.md
-prod/README.md
-modules/resource_group/README.md
-modules/container_registry/README.md
-modules/storage_account/README.md
-modules/key_vault/README.md
-modules/log_analytics/README.md
-modules/application_insights/README.md
-modules/virtual_network/README.md
-modules/cosmos_postgres/README.md
-modules/container_app_environment/README.md
-modules/active_directory_app_registration/README.md
-modules/environment/README.md
-modules/container_apps/webapp/README.md
-modules/container_apps/ctk_functions/README.md
-modules/container_apps/cloai_service/README.md
-modules/container_apps/languagetool/README.md
