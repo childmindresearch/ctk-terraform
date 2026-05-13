@@ -1,3 +1,9 @@
+/**
+ * # Production Environment
+ *
+ * Root configuration for the `prod` environment; instantiates the `environment` module with production domain and AD settings, referencing shared state for ACR outputs.
+ */
+
 terraform {
   backend "azurerm" {
     resource_group_name  = "rg-tfstate"

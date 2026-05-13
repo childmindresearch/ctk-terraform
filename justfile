@@ -21,29 +21,12 @@ graph env=default_env *args='':
 
 # Generate README.md documentation for all Terraform modules and environments
 docs:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    for dir in \
-        shared \
-        dev \
-        prod \
-        modules/resource_group \
-        modules/container_registry \
-        modules/storage_account \
-        modules/key_vault \
-        modules/log_analytics \
-        modules/application_insights \
-        modules/virtual_network \
-        modules/cosmos_postgres \
-        modules/container_app_environment \
-        modules/active_directory_app_registration \
-        modules/environment \
-        modules/container_apps/webapp \
-        modules/container_apps/ctk_functions \
-        modules/container_apps/cloai_service \
-        modules/container_apps/languagetool; do
-        echo "Generating docs for $dir..."
-        terraform-docs --config .terraform-docs.yaml "$dir"
-    done
-    echo "Done."
+    terraform-docs --config .terraform-docs.yaml {{justfile_directory()}}
+    terraform-docs --config .terraform-docs-norecursion.yaml {{justfile_directory()}}/modules/container_apps/webapp
+    terraform-docs --config .terraform-docs-norecursion.yaml {{justfile_directory()}}/modules/container_apps/ctk_functions
+    terraform-docs --config .terraform-docs-norecursion.yaml {{justfile_directory()}}/modules/container_apps/cloai_service
+    terraform-docs --config .terraform-docs-norecursion.yaml {{justfile_directory()}}/modules/container_apps/languagetool
+    terraform-docs --config .terraform-docs-norecursion.yaml {{justfile_directory()}}/dev
+    terraform-docs --config .terraform-docs-norecursion.yaml {{justfile_directory()}}/prod
+    terraform-docs --config .terraform-docs-norecursion.yaml {{justfile_directory()}}/shared
 

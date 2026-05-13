@@ -1,3 +1,9 @@
+/**
+ * # Virtual Network
+ *
+ * Creates a VNet with three subnets: one for container apps (Key Vault service endpoint), one for database private endpoints, and one for storage (Storage + Key Vault service endpoints).
+ */
+
 resource "azurerm_virtual_network" "vnet" {
   name                = format("vnet-%s-%s", var.project_name, var.environment_name)
   location            = var.region_name

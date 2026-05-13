@@ -1,3 +1,9 @@
+/**
+ * # Active Directory App Registration
+ *
+ * Registers an Azure AD application with a service principal, client secret, and owner assignments; both the app and service principal have `prevent_destroy` lifecycle guards.
+ */
+
 data "azuread_client_config" "current" {}
 data "azuread_group" "owner_group" {
   object_id = var.owner_group_object_id

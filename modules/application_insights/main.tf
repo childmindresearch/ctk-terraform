@@ -1,3 +1,9 @@
+/**
+ * # Application Insights
+ *
+ * Deploys an Application Insights instance of type `web` linked to the Log Analytics Workspace.
+ */
+
 resource "azurerm_application_insights" "app_insights" {
   name                = format("appi-%s-%s", var.project_name, var.environment_name)
   location            = var.location

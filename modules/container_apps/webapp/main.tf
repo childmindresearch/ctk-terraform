@@ -1,3 +1,9 @@
+/**
+ * # Container App — Webapp
+ *
+ * Deploys the CTK Webapp container app with external ingress, a custom domain, managed SSL, and Azure AD authentication via a user-assigned identity with `AcrPull` access.
+ */
+
 resource "azurerm_user_assigned_identity" "webapp_identity" {
   name                = format("id-%s-%s-webapp", var.project_name, var.environment_name)
   resource_group_name = var.resource_group_name

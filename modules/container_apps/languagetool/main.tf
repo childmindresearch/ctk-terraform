@@ -1,3 +1,9 @@
+/**
+ * # Container App — Languagetool
+ *
+ * Deploys the open-source Languagetool grammar-checking service as an internal container app using the public `erikvl87/languagetool:6.7` image on port 8010.
+ */
+
 resource "azurerm_container_app" "languagetool" {
   name                         = format("ca-%s-%s-languagetool", var.project_name, var.environment_name)
   container_app_environment_id = var.container_app_environment_id
