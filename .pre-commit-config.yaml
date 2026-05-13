@@ -1,0 +1,8 @@
+repos:
+  - repo: https://github.com/terraform-docs/terraform-docs
+    rev: v0.19.0
+    hooks:
+      - id: terraform-docs-go
+        args:
+          - --config=.terraform-docs.yaml
+        files: \.tf$
