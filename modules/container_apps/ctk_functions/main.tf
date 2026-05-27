@@ -1,3 +1,9 @@
+/**
+ * # Container App — CTK Functions
+ *
+ * Deploys the CTK Functions service as an internal container app with Key Vault secret references via a user-assigned identity with `AcrPull` and `Key Vault Secrets User` roles.
+ */
+
 resource "azurerm_user_assigned_identity" "ctk_functions_identity" {
   name                = format("id-%s-%s-ctk-functions", var.project_name, var.environment_name)
   resource_group_name = var.resource_group_name

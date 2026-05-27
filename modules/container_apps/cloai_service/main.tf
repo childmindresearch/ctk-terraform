@@ -1,3 +1,9 @@
+/**
+ * # Container App — CLOAI Service
+ *
+ * Deploys the CLOAI inference service as an internal container app with a `CONFIG_JSON` secret sourced from Key Vault and `WEB_CONCURRENCY=4`.
+ */
+
 resource "azurerm_user_assigned_identity" "cloai_identity" {
   name                = format("id-%s-%s-cloai-service", var.project_name, var.environment_name)
   resource_group_name = var.resource_group_name
