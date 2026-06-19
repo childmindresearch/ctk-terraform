@@ -108,10 +108,14 @@ variable "acr_admin_password" {
   sensitive   = true
 }
 
-variable "redcap_cmi_api_token" {
+variable "key_vault_id" {
   type        = string
-  description = "API Token for CMI-RedCap."
-  sensitive   = true
+  description = "The ID of the Key Vault to grant access to."
+}
+
+variable "redcap_cmi_api_token_secret_id" {
+  type        = string
+  description = "The Key Vault secret ID for the cmi Redcap token."
 }
 
 variable "application_insights_connection_string" {

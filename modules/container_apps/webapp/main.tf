@@ -15,6 +15,12 @@ resource "azurerm_role_assignment" "webapp_acr_pull" {
   principal_id         = azurerm_user_assigned_identity.webapp_identity.principal_id
 }
 
+resource "azurerm_role_assignment" "webapp_kv_secrets_user" {
+  scope                = var.key_vault_id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_user_assigned_identity.webapp_identity.principal_id
+}
+
 resource "azurerm_container_app" "webapp" {
   name                         = format("ca-%s-%s-webapp", var.project_name, var.environment_name)
   container_app_environment_id = var.container_app_environment_id
@@ -35,7 +41,7 @@ resource "azurerm_container_app" "webapp" {
     }
   }
 
-  depends_on = [azurerm_role_assignment.webapp_acr_pull]
+  depends_on = [azurerm_role_assignment.webapp_acr_pull, azurerm_role_assignment.webapp_kv_secrets_user]
 
   lifecycle {
     ignore_changes = [
@@ -55,8 +61,9 @@ resource "azurerm_container_app" "webapp" {
   }
 
   secret {
-    name  = "redcap-cmi-api-token"
-    value = var.redcap_cmi_api_token
+    name                = "redcap-cmi-api-token"
+    key_vault_secret_id = var.redcap_cmi_api_token_secret_id
+    identity            = azurerm_user_assigned_identity.webapp_identity.id
   }
 
   secret {
@@ -206,8 +213,9 @@ resource "azapi_update_resource" "webapp_bind_domain" {
             value = var.azure_ad_client_secret
           },
           {
-            name  = "redcap-cmi-api-token"
-            value = var.redcap_cmi_api_token
+            name                = "redcap-cmi-api-token"
+            key_vault_secret_id = var.redcap_cmi_api_token_secret_id
+            identity            = azurerm_user_assigned_identity.webapp_identity.id
           }
         ]
 
