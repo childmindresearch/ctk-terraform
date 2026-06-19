@@ -175,5 +175,6 @@ module "webapp" {
   azure_ad_tenant_id                     = module.active_directory_app_registration.tenant_id
   application_insights_connection_string = module.application_insights.connection_string
   custom_domain                          = var.webapp_custom_domain
-  redcap_cmi_api_token                   = "${module.key_vault.vault_uri}secrets/redcap-cmi-api-token"
+  redcap_cmi_api_token_secret_id         = "${module.key_vault.vault_uri}secrets/redcap-cmi-api-token"
+  key_vault_id                           = module.key_vault.id
 }
