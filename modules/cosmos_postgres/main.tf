@@ -1,3 +1,9 @@
+/**
+ * # Cosmos DB PostgreSQL
+ *
+ * Provisions a Cosmos DB for PostgreSQL cluster accessible only via a private endpoint, with a private DNS zone for name resolution and the administrator password stored in Key Vault.
+ */
+
 resource "azurerm_cosmosdb_postgresql_cluster" "cluster" {
   name                                 = format("cosmos-pg-%s-%s", var.project_name, var.environment_name)
   resource_group_name                  = var.resource_group_name

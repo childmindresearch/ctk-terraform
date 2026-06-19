@@ -1,3 +1,9 @@
+/**
+ * # Shared Infrastructure
+ *
+ * Provisions the shared resource group, Azure Container Registry, and storage account deployed once and referenced by all environments via `terraform_remote_state`.
+ */
+
 terraform {
   backend "azurerm" {
     resource_group_name  = "rg-tfstate"

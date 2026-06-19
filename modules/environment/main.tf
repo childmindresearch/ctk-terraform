@@ -1,3 +1,9 @@
+/**
+ * # Environment
+ *
+ * Orchestrator module that composes all infrastructure sub-modules into a complete environment, wiring networking, storage, secrets, database, monitoring, AD authentication, and all container apps.
+ */
+
 data "azuread_group" "ctk_owners" {
   display_name = "CTK-Owners"
 }

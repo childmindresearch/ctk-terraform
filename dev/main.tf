@@ -1,3 +1,9 @@
+/**
+ * # Development Environment
+ *
+ * Root configuration for the `dev` environment; instantiates the `environment` module with dev-specific domain and AD settings, referencing shared state for ACR outputs.
+ */
+
 terraform {
   backend "azurerm" {
     resource_group_name  = "rg-tfstate"

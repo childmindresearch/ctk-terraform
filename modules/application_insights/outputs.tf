@@ -1,9 +1,11 @@
 output "connection_string" {
-  value     = azurerm_application_insights.app_insights.connection_string
-  sensitive = true
+  description = "The connection string for Application Insights."
+  value       = azurerm_application_insights.app_insights.connection_string
+  sensitive   = true
 }
 
 output "instrumentation_key" {
-  value     = azurerm_application_insights.app_insights.instrumentation_key
-  sensitive = true
+  description = "The instrumentation key for Application Insights."
+  value       = azurerm_application_insights.app_insights.instrumentation_key
+  sensitive   = true
 }

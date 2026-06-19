@@ -1,3 +1,9 @@
+/**
+ * # Log Analytics
+ *
+ * Creates an Azure Log Analytics Workspace used as the centralised logging backend for Application Insights and the Container App Environment.
+ */
+
 resource "azurerm_log_analytics_workspace" "log_analytics" {
   name                = format("log-%s-%s", var.project_name, var.environment_name)
   location            = var.region_name

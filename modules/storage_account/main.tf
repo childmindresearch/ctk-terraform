@@ -1,3 +1,9 @@
+/**
+ * # Storage Account
+ *
+ * Creates an Azure Storage Account with TLS 1.2, public blob access disabled, and network rules that default-deny public traffic with an optional VNet subnet allowlist.
+ */
+
 resource "azurerm_storage_account" "storage" {
   name                     = format("st%s%s", var.project_name, var.environment_name)
   resource_group_name      = var.resource_group_name

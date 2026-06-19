@@ -1,3 +1,9 @@
+/**
+ * # Key Vault
+ *
+ * Provisions an Azure Key Vault with RBAC authorisation, default-deny network ACLs restricted to specified subnets and the operator's current IP, and the `Key Vault Secrets Officer` role assigned to the owner group.
+ */
+
 data "azurerm_client_config" "current" {}
 
 data "http" "current_ip" {

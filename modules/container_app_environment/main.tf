@@ -1,3 +1,9 @@
+/**
+ * # Container App Environment
+ *
+ * Creates an Azure Container App Environment integrated with Log Analytics and attached to the container apps VNet subnet, with optional internal load balancer support.
+ */
+
 resource "azurerm_container_app_environment" "container_environment" {
   name                           = format("cae-%s-%s", var.project_name, var.environment_name)
   location                       = var.region_name
