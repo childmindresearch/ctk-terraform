@@ -131,23 +131,23 @@ module "cloai_service" {
 }
 
 module "ctk_functions" {
-  source                            = "../container_apps/ctk_functions"
-  resource_group_name               = module.resource_group.name
-  project_name                      = var.project_name
-  region_name                       = var.region_name
-  environment_name                  = var.environment_name
-  container_app_environment_id      = module.container_app_environment.container_app_environment_id
-  acr_login_server                  = var.acr_login_server
-  acr_id                            = var.acr_id
-  acr_admin_username                = var.acr_admin_username
-  image_tag                         = var.ctk_functions_image_tag
-  cloai_model                       = var.cloai_model
-  cloai_service_url                 = "https://${module.cloai_service.fqdn}/v1"
-  languagetool_url                  = "https://${module.languagetool.fqdn}/v2" // Note: ctk-functions expects /v2 included here; webapp does not.
-  redcap_hbn_api_token_secret_id    = "${module.key_vault.vault_uri}secrets/redcap-hbn-api-token"
-  redcap_cmi_api_token_secret_id    = "${module.key_vault.vault_uri}secrets/redcap-cmi-api-token"
-  redcap_pyrite_api_token_secret_id = "${module.key_vault.vault_uri}secrets/redcap-pyrite-api-token"
-  key_vault_id                      = module.key_vault.id
+  source                                = "../container_apps/ctk_functions"
+  resource_group_name                   = module.resource_group.name
+  project_name                          = var.project_name
+  region_name                           = var.region_name
+  environment_name                      = var.environment_name
+  container_app_environment_id          = module.container_app_environment.container_app_environment_id
+  acr_login_server                      = var.acr_login_server
+  acr_id                                = var.acr_id
+  acr_admin_username                    = var.acr_admin_username
+  image_tag                             = var.ctk_functions_image_tag
+  cloai_model                           = var.cloai_model
+  cloai_service_url                     = "https://${module.cloai_service.fqdn}/v1"
+  languagetool_url                      = "https://${module.languagetool.fqdn}/v2" // Note: ctk-functions expects /v2 included here; webapp does not.
+  redcap_hbn_api_token_secret_id        = "${module.key_vault.vault_uri}secrets/redcap-hbn-api-token"
+  redcap_cmi_pid625_api_token_secret_id = "${module.key_vault.vault_uri}secrets/redcap-cmi-pid625-api-token"
+  redcap_cmi_pid891_api_token_secret_id = "${module.key_vault.vault_uri}secrets/redcap-cmi-pid891-api-token"
+  key_vault_id                          = module.key_vault.id
 }
 
 module "webapp" {

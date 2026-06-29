@@ -54,14 +54,14 @@ variable "redcap_hbn_api_token_secret_id" {
   description = "The Key Vault secret ID for the HBN Redcap token."
 }
 
-variable "redcap_cmi_api_token_secret_id" {
+variable "redcap_cmi_pid625_api_token_secret_id" {
   type        = string
-  description = "The Key Vault secret ID for the cmi Redcap token."
+  description = "The Key Vault secret ID for the cmi PID625 Redcap token."
 }
 
-variable "redcap_pyrite_api_token_secret_id" {
+variable "redcap_cmi_pid891_api_token_secret_id" {
   type        = string
-  description = "The Key Vault secret ID for the pyrite Redcap token."
+  description = "The Key Vault secret ID for the cmi PID891 Redcap token."
 }
 
 variable "key_vault_id" {
