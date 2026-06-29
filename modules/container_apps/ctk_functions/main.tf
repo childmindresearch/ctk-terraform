@@ -89,12 +89,12 @@ resource "azurerm_container_app" "ctk_functions" {
       }
 
       env {
-        name        = "REDCAP_CMI_API_TOKEN"
-        secret_name = "redcap-cmi-api-token"
+        name        = "REDCAP_CMI_API625_API_TOKEN"
+        secret_name = "redcap-cmi-pid625-api-token"
       }
       env {
-        name        = "REDCAP_PYRITE_API_TOKEN"
-        secret_name = "redcap-pyrite-api-token"
+        name        = "REDCAP_CMI_PID891_API_TOKEN"
+        secret_name = "redcap-cmi-pid891-api-token"
       }
     }
   }
@@ -105,13 +105,13 @@ resource "azurerm_container_app" "ctk_functions" {
     identity            = azurerm_user_assigned_identity.ctk_functions_identity.id
   }
   secret {
-    name                = "redcap-cmi-api-token"
-    key_vault_secret_id = var.redcap_cmi_api_token_secret_id
+    name                = "redcap-cmi-pid625-api-token"
+    key_vault_secret_id = var.redcap_cmi_pid625_api_token_secret_id
     identity            = azurerm_user_assigned_identity.ctk_functions_identity.id
   }
   secret {
-    name                = "redcap-pyrite-api-token"
-    key_vault_secret_id = var.redcap_pyrite_api_token_secret_id
+    name                = "redcap-cmi-pid891-api-token"
+    key_vault_secret_id = var.redcap_cmi_pid891_api_token_secret_id
     identity            = azurerm_user_assigned_identity.ctk_functions_identity.id
   }
 }
